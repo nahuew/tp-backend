@@ -1,4 +1,4 @@
-La carpeta de node_modules no la subí porque pesa mucho tienen que instarl ustedes node y express por su cuenta 
+La carpeta de node_modules no la subí porque pesa mucho tienen que instarla ustedes node y express por su cuenta 
 
 #AVISO
 
