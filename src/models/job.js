@@ -10,17 +10,4 @@ class Obra {
         this.startDate          = startDate         || null
         this.estimateEndDate    = estimateEndDate   || null
     }
-
-    // Método para obtener la obra en formato JSON
-    toJSON() {
-        return {
-            id: this.id,
-            name: this.name,
-            location: this.location,
-            director: this.director,
-            status: this.status,
-            startDate: this.startDate,
-            estimateEndDate: this.estimateEndDate
-        }
-    }
 }
