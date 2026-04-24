@@ -1,6 +1,6 @@
 const STATUS = ["Planning", "running", "stop", "conclude"] 
 
-class Obra {
+class budget {
     constructor(name, location, amount, status, startDate, estimateEndDate, description = '') {
         this.id                 = Date.now()
         this.name               = name
