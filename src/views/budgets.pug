@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h2 Presupuestos de la obra #{jobId}
+
+  if budgets.length === 0
+    p No hay presupuestos para esta obra
+  else
+    table(border="1")
+      tr
+        th ID
+        th Nombre
+        th Ubicación
+        th Monto
+        th Estado
+        th Fecha inicio
+        th Fecha fin estimada
+
+      each b in budgets
+        tr
+          td= b.id
+          td= b.name
+          td= b.location
+          td= b.amount
+          td= b.status
+          td= b.startDate
+          td= b.estimatedEndDate
+
+  br
+  a(href="/jobs/view") Volver a obras

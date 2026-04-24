@@ -1,20 +1,46 @@
 [
-    {
-        "id": 1640995200000,
-        "name": "Construcción de edificio residencial",
-        "location": "Buenos Aires, Argentina",
-        "director": "Juan Pérez",
-        "status": "Planning",
-        "startDate": "2023-01-01",
-        "estimateEndDate": "2023-12-31"
-    },
-    {
-        "id": 1641081600000,
-        "name": "Remodelación de oficina",
-        "location": "Córdoba, Argentina",
-        "director": "María García",
-        "status": "running",
-        "startDate": "2023-02-15",
-        "estimateEndDate": "2023-08-15"
-    }
+  {
+    "id": 1001,
+    "name": "Presupuesto inicial edificio",
+    "location": "Buenos Aires, Argentina",
+    "amount": 10000000,
+    "status": "waiting",
+    "startDate": "2023-01-10",
+    "estimatedEndDate": "2023-06-30",
+    "job_id": 1,
+    "description": "Estimación inicial de materiales y mano de obra"
+  },
+  {
+    "id": 1002,
+    "name": "Presupuesto actualizado edificio",
+    "location": "Buenos Aires, Argentina",
+    "amount": 12500000,
+    "status": "approved",
+    "startDate": "2023-02-15",
+    "estimatedEndDate": "2023-11-30",
+    "job_id": 1,
+    "description": "Incluye ajustes por inflación"
+  },
+  {
+    "id": 1003,
+    "name": "Presupuesto instalaciones chalet",
+    "location": "Santa Fé, Argentina",
+    "amount": 3500000,
+    "status": "rejected",
+    "startDate": "2023-04-10",
+    "estimatedEndDate": "2023-09-30",
+    "job_id": 2,
+    "description": "Instalaciones eléctricas y sanitarias"
+  },
+  {
+    "id": 1004,
+    "name": "Presupuesto estructura chalet",
+    "location": "Santa Fé, Argentina",
+    "amount": 5000000,
+    "status": "approved",
+    "startDate": "2023-05-01",
+    "estimatedEndDate": "2023-12-15",
+    "job_id": 2,
+    "description": "Construcción de estructura principal"
+  }
 ]

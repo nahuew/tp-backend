@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h2 Detalle obra
+
+  p
+    strong ID:
+    | #{job.id}
+
+  p
+    strong Nombre:
+    | #{job.name}
+
+  p
+    strong Ubicación:
+    | #{job.location}
+  
+  p
+    strong Director:
+    | #{job.director}
+
+  br
+  a(href=`/jobs/${job.id}/budgets/view`) Ver presupuestos
+
+  br
+  br
+  a(href="/jobs/view") Volver 

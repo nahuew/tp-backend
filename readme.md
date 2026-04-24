@@ -1,4 +1,25 @@
-La carpeta de node_modules no la subí porque pesa mucho tienen que instarla ustedes node y express por su cuenta 
+### Para probar este proyecto:
+
+1. Instalar dependencias con: `npm install`
+2. Para iniciar el servidor en modo desarrollo: `npm start` o `npm run dev` 
+
+### Rutas principales
+
+#### Vistas (Pug)
+
+- `GET /jobs/view` → Lista de obras  
+- `GET /jobs/view/:id` → Detalle de una obra  
+- `GET /jobs/new` → Formulario para crear una obra  
+- `GET /jobs/:jobId/budgets/view` → Presupuestos de una obra  
+
+#### API (JSON)
+
+- `GET /jobs` → Obtener todas las obras  
+- `GET /jobs/:id` → Obtener obra por ID  
+- `POST /jobs` → Crear nueva obra  
+- `PUT /jobs/:id` → Actualizar obra  
+- `DELETE /jobs/:id` → Eliminar obra  
+- `GET /jobs/:jobId/budgets` → Presupuestos por obra  
 
 #AVISO
 
