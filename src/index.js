@@ -28,7 +28,3 @@ app.get('/', (req, res) => {
     // esta vacio porque como hay que hacerlo manual, por lo que dijo el profe,
     // depende de que tengamos las clases creadas
 });
-
-// --- CLASES ---
-
-

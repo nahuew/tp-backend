@@ -1,4 +1,4 @@
-const STATUS = ["Planning", "running", "stop", "conclude"] 
+const STATUS = ["waiting","approved","rejected" ] 
 
 class budget {
     constructor(name, location, amount, status, startDate, estimateEndDate, description = '') {
@@ -6,7 +6,7 @@ class budget {
         this.name               = name
         this.location           = location
         this.amount             = amount
-        this.status             = STATUS.includes(status) ? status : "Planning"
+        this.status             = STATUS.includes(status) ? status : "waiting"
         this.startDate          = startDate         || null
         this.estimatedEndDate   = estimateEndDate   || null
         this.description        = description
