@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/style.css")
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        title login
+    body.login.login
+        section.login-card 
+            h1.tittle-login Bienvenido
+            h2.subtitle-login inicia sesión de administración
+    
+            form(action="/login", method="POST")
+                div.user
+                    label(for="username") Usuario
+                    input(type="text", name="username", id="username", placeholder="usuario", required)
+                div.user
+                    label(for="password") Contraseña
+                    input(type="password", name="password", id="password", placeholder="*********", required)
+                button(type="submit") Enviar

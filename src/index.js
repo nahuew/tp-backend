@@ -5,6 +5,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+const loginRoutes = require("./routes/loginRouters");
 const jobRoutes = require("./routes/jobRoutes");
 
 app.use(express.json()); // Recibe el JSON en el cuerpo de las peticiones
@@ -20,8 +21,17 @@ app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+// --- Ruta Principal (Redirige al login por defecto) ---
+app.get("/", (req, res) => {
+    res.redirect("/login");
+});
+
 // --- Ruta De Pruebas ---
+app.use("/login", loginRoutes);
 app.use("/jobs", jobRoutes);
+
+// --- Ruta public para css ---
+app.use(express.static('public'));
 
 
 // --- Iniciar servidor ---

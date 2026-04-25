@@ -1,26 +1,29 @@
 extends layout
 
 block content
-  h2 Lista de obras
-
-  table(border="1")
-    tr
-      th ID
-      th Nombre
-      th Ubicación
-      th Director
-      th Estado
-      th Fecha de inicio
-      th Fecha estimada de fin
-
-    each job in jobs
-      tr
-        td= job.id
-        td= job.name
-        td= job.location
-        td= job.director
-        td= job.status
-        td= job.startDate
-        td= job.estimateEndDate
-        td
-          a(href=`/jobs/view/${job.id}`) Ver
+  .index-container
+    h2 Lista de obras
+    .table-wrapper
+      table
+        thead
+          tr
+            th ID
+            th Nombre
+            th Ubicación
+            th Director
+            th Estado
+            th Fecha de inicio
+            th Fecha estimada de fin
+            th
+        tbody
+          each job in jobs
+            tr
+              td= job.id
+              td= job.name
+              td= job.location
+              td= job.director
+              td= job.status
+              td= job.startDate
+              td= job.estimateEndDate
+              td
+                a(href=`/jobs/view/${job.id}`) Ver

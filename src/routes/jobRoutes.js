@@ -10,6 +10,8 @@ const {
     deleteJob,
     newJobForm,
     getJobDetailView,
+    getBudgetsByJob,
+    getBudgetsView
 } = require("../controllers/jobController");
 
 // rutas CRUD
@@ -18,6 +20,8 @@ router.get("/", getJobs);
 router.get("/view", getJobsView);
 router.get("/new", newJobForm);
 router.post("/", createJob);
+router.get("/:jobId/budgets/view", getBudgetsView);
+router.get("/:jobId/budgets", getBudgetsByJob);
 router.get("/:id", getJobById);
 router.put("/:id", updateJob);
 router.delete("/:id", deleteJob);

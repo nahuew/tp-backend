@@ -1,43 +1,26 @@
 extends layout
 
 block content
-  h2 Nueva obra
+  .new-container
+    .form-card
+      h2 Nueva obra
+      form(method="POST", action="/jobs")
+        label(for="name") Nombre:
+        input(type="text" name="name" required)
 
-  form(method="POST", action="/jobs")
+        label(for="location") Ubicación:
+        input(type="text" name="location" required)
 
-    label(for="name") Nombre:
-    input(type="text" name="name" required)
+        label(for="director") Director:
+        input(type="text" name="director" required)
 
-    br
-    br
+        label(for="status") Estado:
+        input(type="text" name="status" required)
 
-    label(for="location") Ubicación:
-    input(type="text" name="location" required)
+        label(for="startDate") Fecha de inicio:
+        input(type="date" name="startDate" required)
 
-    br
-    br
+        label(for="estimateEndDate") Fecha de fin estimada:
+        input(type="date" name="estimateEndDate" required)
 
-    label(for="director") Director:
-    input(type="text" name="director" required)
-
-    br
-    br
-
-    label(for="status") Estado:
-    input(type="text" name="status" required)
-
-    br
-    br
-
-    label(for="startDate") Fecha de inicio:
-    input(type="date" name="startDate" required)
-
-    br
-    br
-
-    label(for="estimateEndDate") Fecha de fin estimada:
-    input(type="date" name="estimateEndDate" required)
-    br
-    br
-
-    button(type="submit") Guardar
+        button(type="submit") Guardar

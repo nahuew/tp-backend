@@ -1,0 +1,242 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #222;
+    margin: 0;
+    padding: 0;
+}
+
+.login {
+    font-family: "Domine", serif;
+    background-color: #f0f0f0;
+    color: #333;
+    background: #0052D4;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #6FB1FC, #4364F7, #0052D4);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #6FB1FC, #4364F7, #0052D4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*login*/
+
+.tittle-login{
+    text-align: center;
+    margin-top: 20px;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.subtitle-login{
+    text-align: center;
+    margin-top: 14px;
+    color: #a3a3a3;
+    font-size: 15px;
+}
+
+.login-card{
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    width: 400px;
+}
+
+
+.user{
+    margin-top: 2vw;
+}
+
+button{
+    padding: 10px 20px;
+    margin: 2vw auto;
+    display: block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #3b526b;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+
+/*nav*/
+nav {
+    background-color: #0099ff;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    text-decoration: none; /* Esto quita la línea de abajo */
+    color: #e5f2ff;        /* Elegí el color que quieras (puedes usar nombres como 'red' o hex) */
+    font-weight: bold;     /* Opcional: para que resalten un poco más */
+    margin: 0 10px;        /* Opcional: para darles espacio lateral */
+}
+
+nav a:hover {
+    color: #ffe100;        /* Un color distinto para que el usuario sepa que es clickeable */
+}
+
+/*index*/
+
+.index-container {
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.table-wrapper {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 18px 18px 8px 18px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent;
+    font-size: 1rem;
+}
+
+th, td {
+    padding: 12px 10px;
+    text-align: left;
+}
+
+th {
+    background: #f5f6fa;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 2px solid #ececec;
+}
+
+tr {
+    border-bottom: 1px solid #ececec;
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    color: #222;
+}
+
+td a {
+    color: #1565c0;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+td a:hover {
+    color: #003c8f;
+}
+
+/* new budget*/
+
+
+
+.new-container {
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+    padding: 0 20px;
+}
+
+.form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 36px 36px 24px 36px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #222;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 22px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafbfc;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+    border-color: #1565c0;
+    outline: none;
+}
+
+button {
+    padding: 12px 36px;
+    background-color: #1565c0;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 0 auto;
+    display: block;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #003c8f;
+}
+
+
+
+
+
+
+/* footer */
+
+footer {
+    color: #888;
+    font-size: 0.95em;
+    margin-top: 30px;
+}

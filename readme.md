@@ -7,6 +7,7 @@
 
 #### Vistas (Pug)
 
+- `GET /login → inicio de sesión
 - `GET /jobs/view` → Lista de obras  
 - `GET /jobs/view/:id` → Detalle de una obra  
 - `GET /jobs/new` → Formulario para crear una obra  
