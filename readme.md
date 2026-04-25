@@ -1,3 +1,9 @@
+#### AVISO LOGIN
+
+El login lleva usuario y contraseña no van a poder entrar sino son:
+user:admin 
+password: admin123
+
 ### Para probar este proyecto:
 
 1. Instalar dependencias con: `npm install`
@@ -7,11 +13,10 @@
 
 #### Vistas (Pug)
 
-- `GET /login → inicio de sesión
 - `GET /jobs/view` → Lista de obras  
 - `GET /jobs/view/:id` → Detalle de una obra  
 - `GET /jobs/new` → Formulario para crear una obra  
-- `GET /jobs/:jobId/budgets/view` → Presupuestos de una obra  
+- `GET /jobs/:jobId/budgets/view` → Presupuestos de una obra 
 
 #### API (JSON)
 
