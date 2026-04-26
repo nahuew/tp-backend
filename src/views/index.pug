@@ -2,6 +2,19 @@ extends layout
 
 block content
   .index-container
+    if query.success
+    p.flash(style="color: green; font-weight: bold; transition: opacity 0.5s;")
+      | ✅ Obra creada correctamente
+
+    script.
+      setTimeout(() => {
+        const msg = document.querySelector('.flash');
+        if (msg) {
+          msg.style.opacity = '0';
+          setTimeout(() => msg.remove(), 500);
+        }
+      }, 2500);
+    br
     h2 Lista de obras
     .table-wrapper
       table
