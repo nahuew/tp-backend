@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 const loginRoutes = require("./routes/loginRouters");
 const jobRoutes = require("./routes/jobRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
 
 app.use(express.json()); // Recibe el JSON en el cuerpo de las peticiones
 app.use(express.urlencoded({ extended: true })); // Permite recibir datos de formularios
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 // --- Ruta De Pruebas ---
 app.use("/login", loginRoutes);
 app.use("/jobs", jobRoutes);
+app.use("/budgets", budgetRoutes);
 
 // --- Ruta public para css ---
 app.use(express.static('public'));

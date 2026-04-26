@@ -154,7 +154,7 @@ td {
 
 td a {
     color: #1565c0;
-    text-decoration: underline;
+    text-decoration: none;
     font-weight: 500;
 }
 
@@ -229,8 +229,20 @@ button:hover {
 }
 
 
+/*detail*/
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #007BFF;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin: 10px;
+}
 
-
+.btn:hover {
+  background-color: #0056b3;
+}
 
 
 /* footer */

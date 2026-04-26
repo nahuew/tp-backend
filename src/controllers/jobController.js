@@ -35,7 +35,10 @@ const getJobs = (req, res) => {
 // GET VIEW
 const getJobsView = (req, res) => {
     const jobs = jobsDataReader();
-    res.render("index", { jobs });
+    res.render("index", { 
+    jobs,
+    query: req.query
+    });
 };
 
 // GET BY ID
@@ -57,12 +60,18 @@ const createJob = (req, res) => {
     const jobs = jobsDataReader();
     const { name, location, director, status, startDate, estimateEndDate } = req.body;
     const newJob = new Job(name, location, director, status, startDate, estimateEndDate);
+    
     jobs.push(newJob);
     jobsDataSaver(jobs);
-    res.status(201).json({
-        message: "Obra creada",
-        job: newJob
-    });
+
+    if (req.headers["content-type"] === "application/json") {
+        return res.status(201).json({
+            message: "Obra creada",
+            job: newJob
+        });
+    }
+
+    res.redirect("/jobs/view?success=1");
 };
 
 // RENDER NEW JOB FORM
@@ -88,6 +97,7 @@ const updateJob = (req, res) => {
     const jobs = jobsDataReader();
     const id = parseInt(req.params.id);
     const job = jobs.find(j => j.id === id);
+
     if (!job) {
         return res.status(404).json({
             message: "Obra no encontrada"
@@ -113,6 +123,7 @@ const deleteJob = (req, res) => {
     const jobs = jobsDataReader();
     const id = parseInt(req.params.id);
     const newJobs = jobs.filter(j => j.id !== id);
+
     if (jobs.length === newJobs.length) {
         return res.status(404).json({
             message: "Obra no encontrada"

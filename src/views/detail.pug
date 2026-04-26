@@ -1,8 +1,6 @@
 extends layout
 
 block content
-  br
-  a(href="/jobs/view") Volver 
 
   h2 Detalle obra
 
@@ -23,6 +21,7 @@ block content
     | #{job.director}
 
   br
-  a(href=`/jobs/${job.id}/budgets/view`) Ver presupuestos
+  a(href="/jobs/view" class="btn") Volver 
+  a(href=`/budgets/${job.id}/view` class="btn") Ver presupuestos
 
   br
