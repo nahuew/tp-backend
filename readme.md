@@ -25,7 +25,7 @@ password: admin123
 - `POST /jobs` → Crear nueva obra  
 - `PUT /jobs/:id` → Actualizar obra  
 - `DELETE /jobs/:id` → Eliminar obra  
-- `GET /:jobId/` → Presupuestos por obra  
+- `GET /budgest/:jobId/` → Presupuestos por obra  
 
 #AVISO
 
