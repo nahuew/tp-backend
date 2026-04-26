@@ -16,7 +16,7 @@ password: admin123
 - `GET /jobs/view` → Lista de obras  
 - `GET /jobs/view/:id` → Detalle de una obra  
 - `GET /jobs/new` → Formulario para crear una obra  
-- `GET /jobs/:jobId/budgets/view` → Presupuestos de una obra 
+- `GET /budgets/:jobId/view` → Presupuestos de una obra 
 
 #### API (JSON)
 
@@ -25,7 +25,7 @@ password: admin123
 - `POST /jobs` → Crear nueva obra  
 - `PUT /jobs/:id` → Actualizar obra  
 - `DELETE /jobs/:id` → Eliminar obra  
-- `GET /jobs/:jobId/budgets` → Presupuestos por obra  
+- `GET /:jobId/` → Presupuestos por obra  
 
 #AVISO
 
