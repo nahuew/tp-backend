@@ -15,7 +15,11 @@ block content
         input(type="text" name="director" required)
 
         label(for="status") Estado:
-        input(type="text" name="status" required)
+        select(name="status" required)
+          option(value="Planificada") Planificada
+          option(value="Activa") Activa
+          option(value="Finalizada") Finalizada
+          option(value="Cancelada") Cancelada
 
         label(for="startDate") Fecha de inicio:
         input(type="date" name="startDate" required)

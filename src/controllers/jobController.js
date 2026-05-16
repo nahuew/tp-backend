@@ -1,68 +1,55 @@
-const fs = require("fs");
-const path = require("path");
-const Job = require("../models/Job");
-const jobsPath = path.join(__dirname, "../data/job.json");
-
-// Reads data from the JSON file and returns it as a JavaScript object
-const jobsDataReader = () => {
-    try {
-        const data = fs.readFileSync(jobsPath, "utf-8");
-        return JSON.parse(data || "[]");
-    } catch (error) {
-        console.error("Error leyendo datos de obras:", error);
-        return [];
+//conexion con MONGO
+const Job = require('../models/Job');
+const handleError = (res, error) => {
+    console.error("ERROR:", error.name, error.message);
+    if (error.name === "CastError") {
+        return res.status(404).json({ message: "Obra no encontrada" });
     }
-
 };
 
-// Writes the provided data to the JSON file, converting it to a string format
-const jobsDataSaver = (jobs) => {
-    fs.writeFileSync(
-        jobsPath,
-        JSON.stringify(jobs, null, 2)
-    );
-
-};
 
 
 // GET ALL
-const getJobs = (req, res) => {
-    const jobs = jobsDataReader();
-    res.json(jobs);
-    
+const getJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+        res.json(jobs);
+    } catch (error) {
+        handleError(res, error);
+    }
 };
 
 // GET VIEW
-const getJobsView = (req, res) => {
-    const jobs = jobsDataReader();
-    res.render("index", { 
-    jobs,
-    query: req.query
-    });
+const getJobsView = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+        res.render("index", { 
+            jobs,
+            query: req.query
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
 };
+
 
 // GET BY ID
-const getJobById = (req, res) => {
-    const jobs = jobsDataReader();
-    const id = parseInt(req.params.id);
-    const job = jobs.find(j => j.id === id);
-    if (!job) {
-        return res.status(404).json({
-            message: "Obra no encontrada"
-        });
+const getJobById = async (req, res) => {
+    try {
+        const job = await Job.findById(req.params.id);
+        if (!job) return res.status(404).json({ message: "Obra no encontrada" });
+        res.json(job);
+    } catch (error) {
+        handleError(res, error);
     }
-    res.json(job);
 };
 
-
 // CREATE
-const createJob = (req, res) => {
-    const jobs = jobsDataReader();
+const createJob = async(req, res) => {
+    try {
     const { name, location, director, status, startDate, estimateEndDate } = req.body;
-    const newJob = new Job(name, location, director, status, startDate, estimateEndDate);
+    const newJob = await Job.create({ name, location, director, status, startDate, estimateEndDate });
     
-    jobs.push(newJob);
-    jobsDataSaver(jobs);
 
     if (req.headers["content-type"] === "application/json") {
         return res.status(201).json({
@@ -71,7 +58,10 @@ const createJob = (req, res) => {
         });
     }
 
-    res.redirect("/jobs/view?success=1");
+     res.redirect("/jobs/view?success=1");
+    } catch (error) {
+        handleError(res, error);
+    }
 };
 
 // RENDER NEW JOB FORM
@@ -80,24 +70,22 @@ const newJobForm = (req, res) => {
 };
 
 // GET DETAIL VIEW
-const getJobDetailView = (req, res) => {
-    const jobs = jobsDataReader();
-    const id = parseInt(req.params.id);
-    const job = jobs.find(j => j.id === id);
-
-    if (!job) {
-        return res.status(404).send("Obra no encontrada");
+const getJobDetailView = async(req, res) => {
+    try {
+        const job = await Job.findById(req.params.id);
+        if (!job) {
+            return res.status(404).send("Obra no encontrada");
+        }
+        res.render("detail", { job });
+   } catch (error) {
+        handleError(res, error);
     }
-
-    res.render("detail", { job });
 };
 
 // UPDATE
-const updateJob = (req, res) => {
-    const jobs = jobsDataReader();
-    const id = parseInt(req.params.id);
-    const job = jobs.find(j => j.id === id);
-
+const updateJob = async(req, res) => {
+    try {
+        const job = await Job.findById(req.params.id); // Busca la obra por ID en MongoDB
     if (!job) {
         return res.status(404).json({
             message: "Obra no encontrada"
@@ -110,31 +98,31 @@ const updateJob = (req, res) => {
     job.director = director ?? job.director;
     job.status = status ?? job.status;
 
-    jobsDataSaver(jobs);
+    await job.save(); // Guarda los cambios en MongoDB
 
     res.json({
         message: "Obra actualizada",
         job
-    });
+    }); 
+    } catch (error) {
+        handleError(res, error);
+    }
 };
-
 // DELETE
-const deleteJob = (req, res) => {
-    const jobs = jobsDataReader();
-    const id = parseInt(req.params.id);
-    const newJobs = jobs.filter(j => j.id !== id);
-
-    if (jobs.length === newJobs.length) {
+const deleteJob = async (req, res) => {
+    try {
+    const job = await Job.findByIdAndDelete(req.params.id); //  Elimina la obra por ID en MongoDB
+    if (!job) {
         return res.status(404).json({
             message: "Obra no encontrada"
         });
     }
-    jobsDataSaver(newJobs);
-
     res.json({
         message: "Obra eliminada"
     });
-
+    } catch (error) {
+        handleError(res, error);
+    }
 };
 
 

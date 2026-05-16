@@ -31,3 +31,7 @@ password: admin123
 
 Antes de instalar express tiren el comando npm express -v, si les aparece la versión es porque ya esta integrado
 (dudo que quede completo así que por las dudas instalenlo pero es para precaución)
+
+### ACTUALIZACION- SE REFACTORIZA EL CÓDIGO Y SE EXPORTA A MONGO 
+
+Se utiliza Mongo Compass, 

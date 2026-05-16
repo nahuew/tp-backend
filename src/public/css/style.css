@@ -210,6 +210,23 @@ input[type="date"]:focus {
     outline: none;
 }
 
+   select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 22px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background: #fafbfc;
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #1565c0;
+    outline: none;
+}
+
 button {
     padding: 12px 36px;
     background-color: #1565c0;

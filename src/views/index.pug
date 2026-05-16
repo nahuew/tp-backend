@@ -31,12 +31,12 @@ block content
         tbody
           each job in jobs
             tr
-              td= job.id
+              td= job._id
               td= job.name
               td= job.location
               td= job.director
               td= job.status
-              td= job.startDate
-              td= job.estimateEndDate
+              td= new Date(job.startDate).toLocaleDateString('es-AR', { timeZone: 'UTC' })
+              td= new Date(job.estimateEndDate).toLocaleDateString('es-AR', { timeZone: 'UTC' })
               td
-                a(href=`/jobs/view/${job.id}`) Ver
+                a(href=`/jobs/view/${job._id}`) Ver

@@ -1,49 +1,56 @@
-const fs = require("fs");
-const path = require("path");
+//conexion con MONGO
+const Budget = require('../models/Budget');
 
-const budgetsPath = path.join(__dirname, "../data/budget.json");
-
-// Read budgets
-const readBudgets = () => {
-    try {
-        const data = fs.readFileSync(budgetsPath, "utf-8");
-        return JSON.parse(data || "[]");
-    } catch (error) {
-        console.error("Error leyendo budgets:", error);
-        return [];
+const handleError = (res, error) => {
+    console.error("ERROR:", error.name, error.message);
+    if (error.name === "CastError") {
+        return res.status(404).json({ message: "Presupuesto no encontrado" });
     }
 };
 
-// GET budgets by job_id
-const getBudgetsByJob = (req, res) => {
-    const jobId = parseInt(req.params.jobId);
-    console.log("Buscando presupuestos para obra ID:", jobId);
-    const budgets = readBudgets();
 
-    const jobBudgets = budgets.filter(b => b.job_id === jobId);
-
-    if (jobBudgets.length === 0) {
-        return res.status(404).json({
-            message: "No hay presupuestos para esta obra"
-        });
+//create budget
+const createBudget = async (req, res) => {
+    try {
+        const { name, location, amount, status, startDate, estimatedEndDate, job_id, description } = req.body;
+        const newBudget = await Budget.create({ name, location, amount, status, startDate, estimatedEndDate, job_id, description });
+        res.status(201).json({ message: "Presupuesto creado", budget: newBudget });
+    } catch (error) {
+        handleError(res, error);
     }
+};
 
-    res.json(jobBudgets);
+
+// GET budgets by job_id
+const getBudgetsByJob = async (req, res) => {
+    try {
+        const jobBudgets = await Budget.find({ job_id: req.params.jobId});
+
+        if (jobBudgets.length === 0) {
+            return res.status(404).json({ message: "No hay presupuestos para esta obra" });
+        }
+
+        res.json(jobBudgets);
+    } catch (error) {
+        handleError(res, error);
+    }
 };
 
 // GET VIEW budgets by job_id
-const getBudgetsView = (req, res) => {
-    const jobId = parseInt(req.params.jobId);
-    const budgets = readBudgets();
-    const jobBudgets = budgets.filter(b => b.job_id === jobId);
-
-    res.render("budgets", { 
-        budgets: jobBudgets,
-        jobId
-    });
+const getBudgetsView = async (req, res) => {
+    try {
+        const jobBudgets = await Budget.find({ job_id: req.params.jobId });
+        res.render("budgets", { 
+            budgets: jobBudgets,
+            jobId: req.params.jobId
+        });
+    } catch (error) {
+        handleError(res, error);
+    }
 };
 
 module.exports = {
     getBudgetsByJob,
-    getBudgetsView
+    getBudgetsView,
+    createBudget
 };

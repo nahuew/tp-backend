@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  getBudgetsByJob,
-  getBudgetsView
-} = require("../controllers/budgetController");
+const { getBudgetsByJob, getBudgetsView, createBudget } = require("../controllers/budgetController");
 
-router.get("/:jobId/view", getBudgetsView);  
-router.get("/:jobId", getBudgetsByJob);       
-
+router.post("/", createBudget); // 
+router.get("/:jobId/view", getBudgetsView);
+router.get("/:jobId", getBudgetsByJob);
 
 module.exports = router;

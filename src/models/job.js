@@ -1,15 +1,12 @@
-const STATUS = ["planning", "running", "stop", "conclude"] 
+const mongoose = require('mongoose');
 
-class Job {
-    constructor(name, location, director, status, startDate, estimateEndDate) {
-        this.id                 = Date.now()
-        this.name               = name
-        this.location           = location
-        this.director           = director
-        this.status             = STATUS.includes(status) ? status : "planning"
-        this.startDate          = startDate         || null
-        this.estimateEndDate    = estimateEndDate   || null
-    }
-}
+const jobSchema = new mongoose.Schema({
+    name:               { type: String, required: true },
+    location:           { type: String, required: true },
+    director:           { type: String, required: true },
+    status:             { type: String, enum: ["Planificada", "Activa", "Finalizada", "Cancelada"], default: "Planificada" },
+    startDate:          { type: Date, default: null },
+    estimateEndDate:    { type: Date, default: null }
+});
 
-module.exports = Job;
+module.exports = mongoose.model('Job', jobSchema);

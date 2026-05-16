@@ -1,33 +1,31 @@
-const fs = require("fs");
-const path = require("path");
-const Login = require("../models/Login");
-const loginsPath = path.join(__dirname, "../data/login.json");
+const Login=require("../models/Login");
 
-// funtion
-const loginsDataReader = () => {
-    try {
-        const loginContent = fs.readFileSync(loginsPath, 'utf-8');
-        return JSON.parse(loginContent || "[]");
-    } catch (error) {
-        console.error("Error leyendo datos de logins:", error);
-        return [];
+const handleError = (res, error) => {
+    console.error("ERROR:", error.name, error.message);
+    if (error.name === "CastError") {
+        return res.status(404).json({ message: "Login no encontrado" });
+    }    
+};
+
+const getLoginsView = async(req, res) => {
+try {    const logins = await Login.find();
+    res.render("login", { logins });    
+} catch (error) {
+        handleError(res, error);
     }
 };
 
-const getLoginsView = (req, res) => {
-    const logins = loginsDataReader();
-    res.render("login", { logins });    
+const postLogin = async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const newLogin = new Login({ username, password });
+        await newLogin.save();
+        res.redirect("/jobs/view");
+    } catch (error) {
+        handleError(res, error);
+    }
 };
-
-const postLogin = (req, res) => {
-    const logins = loginsDataReader();
-    const { username } = req.body;
-    const newLogin = new Login(username);
-    logins.push(newLogin);
-    fs.writeFileSync(loginsPath, JSON.stringify(logins, null, 2));
-    res.redirect("/jobs/view");
-};
-
+   
 module.exports = {
     getLoginsView,
     postLogin

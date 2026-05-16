@@ -9,7 +9,9 @@ const {
     updateJob,
     deleteJob,
     newJobForm,
-    getJobDetailView
+    getJobDetailView,
+    getBudgetsByJob,
+    getBudgetsView
 } = require("../controllers/jobController");
 
 // rutas CRUD

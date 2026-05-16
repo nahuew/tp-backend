@@ -13,19 +13,18 @@ block content
         th Ubicación
         th Monto
         th Estado
-        th Fecha inicio
+        th Fecha incio
         th Fecha fin estimada
 
       each b in budgets
         tr
-          td= b.id
+          td= b._id
           td= b.name
           td= b.location
           td= b.amount
           td= b.status
-          td= b.startDate
-          td= b.estimatedEndDate
-
+          td= new Date(b.startDate).toLocaleDateString('es-AR')
+          td= new Date(b.estimatedEndDate).toLocaleDateString('es-AR')
   br
   a(href="/jobs/view" class="btn") Volver
   

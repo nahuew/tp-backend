@@ -1,9 +1,10 @@
-class Login {
-    constructor(username, password = "default_password", roles = ["user"]) {
-        this.name = username;
-        this.password = password;
-        this.roles = roles;
-    }
-}
+const mongoose = require('mongoose');
 
-module.exports = Login;
+const LoginSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    roles:    { type: [String], default: ["user"] }
+});
+
+
+module.exports = mongoose.model('Login', LoginSchema);
