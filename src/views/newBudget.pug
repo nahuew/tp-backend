@@ -6,7 +6,6 @@ block content
       h2 Nuevo presupuesto
 
       form(method="POST" action="/budgets")
-        input(type="hidden" name="job_id" value=jobId)
 
         label(for="name") Nombre de Obra:
         input(type="text" name="name" required)
@@ -18,15 +17,15 @@ block content
         input(type="number" name="amountot" required)    
         label(for="status") Estado:
         select(name="status" required)
-          option(value="waiting") Pendiente de Aprobación
-          option(value="approved") Aprobado 
-          option(value="rejected") Rechazado
+          option(value="waiting") Pendiente de Aprobación:
+          option(value="approved") Aprobado:
+          option(value="rejected") Rechazado:
 
     
         label(for="description") Descripción:
         input(type="text" name="description")
 
-        button(type="submit") Crear presupuesto
+        button(type="submit") Crear presupuesto:
 
       br
       a(href="javascript:history.back()" class="btn") Volver

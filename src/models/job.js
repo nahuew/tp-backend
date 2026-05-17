@@ -4,7 +4,7 @@ const jobSchema = new mongoose.Schema({
     name:               { type: String, required: true },
     location:           { type: String, required: true },
     director:           { type: String, required: true },
-    status:             { type: String, enum: ["Planificada", "Activa", "Finalizada", "Cancelada"], default: "Planificada" },
+    status:             { type: String, enum: ["planning", "active", "completed", "cancelled"], default: "planning" },
     startDate:          { type: Date, default: null },
     estimateEndDate:    { type: Date, default: null }
 });

@@ -13,19 +13,21 @@ password: admin123
 
 #### Vistas (Pug)
 
-- `GET /jobs/view` → Lista de obras  
-- `GET /jobs/view/:id` → Detalle de una obra  
-- `GET /jobs/new` → Formulario para crear una obra  
-- `GET /budgets/:jobId/view` → Presupuestos de una obra 
+GET /jobs/view → Lista de obras
+GET /jobs/view/:id → Detalle de una obra
+GET /jobs/new → Formulario para crear una obra
+GET /budgets/new → Formulario de presupuesto (incorporación 17/05)
+GET /budgets/view → Todos los presupuestos 
+GET /budgets/job/:jobId → Presupuestos de una obra
 
 #### API (JSON)
 
-- `GET /jobs` → Obtener todas las obras  
-- `GET /jobs/:id` → Obtener obra por ID  
-- `POST /jobs` → Crear nueva obra  
-- `PUT /jobs/:id` → Actualizar obra  
-- `DELETE /jobs/:id` → Eliminar obra  
-- `GET /budgest/:jobId/` → Presupuestos por obra  
+GET /jobs → Obtener todas las obras
+GET /jobs/:id → Obtener obra por ID
+POST /jobs → Crear nueva obra
+PUT /jobs/:id → Actualizar obra
+DELETE /jobs/:id → Eliminar obra
+GET /budgets/job/:jobId → Presupuestos por obra 
 
 #AVISO
 

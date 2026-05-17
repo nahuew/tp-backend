@@ -1,30 +1,29 @@
 extends layout
 
 block content
-  h2 Presupuestos de la obra #{jobId}
+  h2 Presupuestos #{jobId}
 
   if budgets.length === 0
-    p No hay presupuestos para esta obra
+    p No hay presupuestos
   else
     table(border="1")
       tr
         th ID
-        th Nombre
-        th Ubicación
-        th Monto
+        th Nombre de obra
+        th Monto Mano de Obra
+        th Monto Materiales
+        th Monto Total
         th Estado
-        th Fecha incio
-        th Fecha fin estimada
 
       each b in budgets
         tr
           td= b._id
           td= b.name
-          td= b.location
-          td= b.amount
-          td= b.status
-          td= new Date(b.startDate).toLocaleDateString('es-AR')
-          td= new Date(b.estimatedEndDate).toLocaleDateString('es-AR')
+          td= b.amountmo
+          td= b.amountmat
+          td= b.amountot
+          td= statusMap[b.status]
   br
   a(href="/jobs/view" class="btn") Volver
   
+

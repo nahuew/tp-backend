@@ -66,7 +66,7 @@ const createJob = async(req, res) => {
 
 // RENDER NEW JOB FORM
 const newJobForm = (req, res) => {
-    res.render("new");
+    res.render("newJob");
 };
 
 // GET DETAIL VIEW

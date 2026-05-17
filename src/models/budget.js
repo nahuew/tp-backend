@@ -5,11 +5,13 @@ const budgetSchema = new mongoose.Schema({
     amountmo:           { type: Number, required: true },
     amountmat:          { type: Number, required: true },
     amountot:           { type: Number, required: true },
-    status:             { type: String, enum: ["waiting", "approved", "rejected"], default: "waiting" },
-    startDate:          { type: Date, default: null },
-    estimatedEndDate:   { type: Date, default: null },
-    job_id:             { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
-    description:        { type: String, default: '' }
+    status:             { type: String, enum: ["waiting", "approved", "rejected"], default: "waiting"},
+    description:        { type: String, default: '' },
+    job_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+        default: null
+    }
 });
 
 module.exports = mongoose.model('Budget', budgetSchema);

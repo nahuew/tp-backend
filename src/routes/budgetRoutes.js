@@ -1,12 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
-const {createBudget, getBudgetsByJob, getBudgetsView,newBudgetForm } = require("../controllers/budgetController");
+const {
+    createBudget,
+    getBudgetsView,
+    assignBudgetToJob,
+    getBudgetsByJob,
+    newBudgetForm
+} = require("../controllers/budgetController");
 
-router.get("/new/:jobId", newBudgetForm);
-router.post("/", createBudget); // 
-router.get("/:jobId/view", getBudgetsView);
-router.get("/:jobId", getBudgetsByJob);
+
+// CREAR PRESUPUESTO
+router.get("/new", newBudgetForm);
+router.post("/", createBudget);
+
+
+// VISTA GENERAL
+router.get("/view", getBudgetsView);
+
+
+// VER PRESUPUESTOS DE UNA OBRA (FILTRADO)
+router.get("/job/:jobId", getBudgetsByJob);
+
+
+// ASIGNAR PRESUPUESTO A OBRA (DESPUÉS)
+router.put("/:budgetId/assign/:jobId", assignBudgetToJob);
 
 
 module.exports = router;
