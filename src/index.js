@@ -1,14 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
-const app = express();
+const connectDB = require('./config/db');
+console.log("MONGO:", process.env.MONGO_URI);
 
+const app = express();
 const PORT = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/Cimientos_Solidos_SA')
-  .then(() => console.log('✅ Conectado a MongoDB'))
-  .catch((err) => console.log('❌ Error al conectar MongoDB:', err));
+//conexión a la base de datos
+connectDB();
+
 
 const loginRoutes = require("./routes/loginRouters");
 const jobRoutes = require("./routes/jobRoutes");
