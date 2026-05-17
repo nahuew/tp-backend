@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const budgetSchema = new mongoose.Schema({
     name:               { type: String, required: true },
-    location:           { type: String, required: true },
-    amount:             { type: Number, required: true },
-    status:             { type: String, enum: ["En espera", "Aprobado", "Rechazado"], default: "En espera" },
+    amountmo:           { type: Number, required: true },
+    amountmat:          { type: Number, required: true },
+    amountot:           { type: Number, required: true },
+    status:             { type: String, enum: ["waiting", "approved", "rejected"], default: "waiting" },
     startDate:          { type: Date, default: null },
     estimatedEndDate:   { type: Date, default: null },
     job_id:             { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },

@@ -9,19 +9,19 @@ const handleError = (res, error) => {
 };
 
 
-//create budget
+//CREATE
 const createBudget = async (req, res) => {
     try {
-        const { name, location, amount, status, startDate, estimatedEndDate, job_id, description } = req.body;
-        const newBudget = await Budget.create({ name, location, amount, status, startDate, estimatedEndDate, job_id, description });
-        res.status(201).json({ message: "Presupuesto creado", budget: newBudget });
+        const { name,amountmo,amountmat,amountot, status,job_id,description } = req.body;
+        await Budget.create({ name, amountmo, amountmat, amountot, status,job_id, description });
+        res.redirect(`/jobs/view/${job_id}`); // 
     } catch (error) {
         handleError(res, error);
     }
 };
 
 
-// GET budgets by job_id
+// GET 
 const getBudgetsByJob = async (req, res) => {
     try {
         const jobBudgets = await Budget.find({ job_id: req.params.jobId});
@@ -36,7 +36,7 @@ const getBudgetsByJob = async (req, res) => {
     }
 };
 
-// GET VIEW budgets by job_id
+// GET VIEW 
 const getBudgetsView = async (req, res) => {
     try {
         const jobBudgets = await Budget.find({ job_id: req.params.jobId });
@@ -49,8 +49,15 @@ const getBudgetsView = async (req, res) => {
     }
 };
 
+//RENDER CREATE VIEW
+const newBudgetForm = (req, res) => {
+    const jobId = req.params.jobId;
+    res.render("newBudget", { jobId });
+};
+
 module.exports = {
     getBudgetsByJob,
     getBudgetsView,
-    createBudget
+    createBudget,
+    newBudgetForm
 };

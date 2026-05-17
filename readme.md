@@ -34,4 +34,8 @@ Antes de instalar express tiren el comando npm express -v, si les aparece la ver
 
 ### ACTUALIZACION- SE REFACTORIZA EL CÓDIGO Y SE EXPORTA A MONGO 
 
-Se utiliza Mongo Compass, 
+Conexión a MONGODB ATLAS: Se agrega la carpeta db.js
+Se conecta sin SRV ya que fallaba por conexión.
+Nombre Proyecto Mongo Atlas: Backend_CimientosSolidos 
+Nombre Cluster: CimientosSolidosSA
+Usuario y contraseña del proyecto Mongo Atlas: grupo14
