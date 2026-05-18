@@ -9,7 +9,9 @@ block content
     table(border="1")
       tr
         th ID
-        th Nombre de obra
+        th DNI/CUIT de Cliente
+        th Nombre de cliente
+        th Ubicacion de la obra
         th Monto Mano de Obra
         th Monto Materiales
         th Monto Total
@@ -17,13 +19,17 @@ block content
 
       each b in budgets
         tr
-          td= b._id
-          td= b.name
+          td= b._ID 
+          td= b.idCustomer
+          td= b.nameCustomer
+          td=b.locationJob
           td= b.amountmo
           td= b.amountmat
           td= b.amountot
           td= statusMap[b.status]
+            a(href="/budgets/" + b._id class="btn") Ver detalle
   br
-  a(href="/jobs/view" class="btn") Volver
-  
 
+  a(href="/budgets/new" class="btn") Nuevo Presupuesto
+  |  
+  a(href="/jobs/view" class="btn") Volver

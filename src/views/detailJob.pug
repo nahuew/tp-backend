@@ -22,7 +22,10 @@ block content
 
   br
   a(href="/jobs/view" class="btn") Volver 
-  a(href=`/budgets/job/${job._id}` class="btn") Ver presupuestos
-  a(href="/budgets/new" class="btn") Agregar presupuesto
+  
+  if budget
+    a(href="/budgets/" + budget._id class="btn") Ver presupuesto
+  else
+    p Sin presupuesto vinculado
 
   br

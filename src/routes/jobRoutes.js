@@ -16,14 +16,13 @@ const {
 
 // rutas CRUD
 
-router.get("/", getJobs);
 router.get("/view", getJobsView);
 router.get("/new", newJobForm);
 router.post("/", createJob);
-router.get("/:id", getJobById);
+router.get("/view/:id", getJobDetailView);
 router.put("/:id", updateJob);
 router.delete("/:id", deleteJob);
-router.get("/view/:id", getJobDetailView);
+router.get("/", getJobs);
 
 
 module.exports = router;

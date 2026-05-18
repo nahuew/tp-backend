@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .new-container
+    .form-card
+      h2 Detalle de Presupuesto
+
+      p
+        strong DNI/CUIT de Cliente:
+        |  #{budget.idCustomer}
+      p
+        strong Nombre de Cliente:
+        |  #{budget.nameCustomer}
+      p
+        strong Ubicación de la obra:
+        |  #{budget.locationJob}
+      p
+        strong Monto Mano de Obra:
+        |  #{budget.amountmo}
+      p
+        strong Monto Materiales:
+        |  #{budget.amountmat}
+      p
+        strong Monto Total:
+        |  #{budget.amountot}
+      p
+        strong Estado:
+        |  #{statusMap[budget.status]}
+      p
+        strong Descripción:
+        |  #{budget.description}
+      p
+        strong Obra asignada:
+        |  #{budget.job_id || "Sin asignar"}
+
+      br
+      a(href="/budgets/" + budget._id + "/edit" class="btn") Editar presupuesto
+      |  
+      a(href="/jobs/view" class="btn") Asignar a obra
+      |  
+      a(href="/budgets/view" class="btn") Volver

@@ -1,21 +1,27 @@
 //conexion con MONGO
 const Budget = require('../models/Budget');
 
+const statusMap = {
+    waiting: "Pendiente de Aprobación",
+    approved: "Aprobado",
+    rejected: "Rechazado"
+};
+
 const handleError = (res, error) => {
     console.error("ERROR:", error.name, error.message);
-    if (error.name === "CastError") {
-        return res.status(404).json({ message: "Presupuesto no encontrado" });
-    }
+    res.redirect("/budgets/view");
 };
 
 
-//CREATE
+//CREATE CREA UN NUEVO PRESUPUESTO SIN ASINGAR OBRA
 const createBudget = async (req, res) => {
     try {
-        const { name, amountmo, amountmat, amountot, status, description } = req.body;
+        const { idCustomer,nameCustomer, locationJob, amountmo,amountmat, amountot, status, description,job_id } = req.body;
 
         await Budget.create({
-            name,
+            idCustomer,
+            nameCustomer,
+            locationJob,
             amountmo,
             amountmat,
             amountot,
@@ -30,59 +36,26 @@ const createBudget = async (req, res) => {
     }
 };
 
-// GET 
-const getBudgetsByJob = async (req, res) => {
-    try {
-        const jobBudgets = await Budget.find({ job_id: req.params.jobId });
-
-        const statusMap = {
-            waiting: "Pendiente de Aprobación",
-            approved: "Aprobado",
-            rejected: "Rechazado"
-        };
-
-        if (jobBudgets.length === 0) {
-            return res.render("budgets", {
-                budgets: [],
-                jobId: req.params.jobId,
-                statusMap
-            });
-        }
-
-        return res.render("budgets", {
-            budgets: jobBudgets,
-            jobId: req.params.jobId,
-            statusMap
-        });
-
-    } catch (error) {
-        handleError(res, error);
-    }
-};
-
-// GET VIEW 
+// GET TODOS LOS PRESUPUESTOS
 const getBudgetsView = async (req, res) => {
     try {
-        const jobBudgets = await Budget.find({ job_id: req.params.jobId });
-
-        const statusMap = {
-            waiting: "Pendiente de Aprobación",
-            approved: "Aprobado",
-            rejected: "Rechazado"
-        };
-
-        res.render("budgets", {
-            budgets: jobBudgets,
-            jobId: req.params.jobId,
-            statusMap
-        });
-
+        const budgets = await Budget.find({});
+        res.render("budget", { budgets, jobId: null, statusMap });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+// GET MUESTRA LOS PRESUPUESTOS DE UNA OBRA
+const getBudgetsByJob = async (req, res) => {
+    try {
+        const budgets = await Budget.find({ job_id: req.params.jobId });
+        res.render("budget", { budgets, jobId: req.params.jobId, statusMap });
     } catch (error) {
         handleError(res, error);
     }
 };
 
-//ASIGNA PRESUPUESTO A UNA OBRA
+//ASSING ASIGNA PRESUPUESTO A UNA OBRA
 const assignBudgetToJob = async (req, res) => {
     try {
         const { budgetId, jobId } = req.params;
@@ -103,10 +76,59 @@ const assignBudgetToJob = async (req, res) => {
         handleError(res, error);
     }
 };
+
+// GET FORMULARIO NUEVO PRESUPUESTO
 const newBudgetForm = (req, res) => {
     res.render("newBudget");
 };
 
+
+// GET FORMULARIO EDITAR
+const getEditBudgetForm = async (req, res) => {
+    try {
+        const budget = await Budget.findById(req.params.id);
+
+        if (!budget) {
+            return res.redirect("/budgets/view");  // 
+        }
+
+        res.render("editBudget", { budget });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+// POST ACTUALIZAR PRESUPUESTO
+const updateBudget = async (req, res) => {
+    try {
+        const { idCustomer, nameCustomer, locationJob, amountmo, amountmat, amountot, status, description } = req.body;
+
+        const budget = await Budget.findByIdAndUpdate(
+            req.params.id,
+            { idCustomer, nameCustomer, locationJob, amountmo, amountmat, amountot, status, description },
+            { new: true, runValidators: true }
+        );
+
+        if (!budget) {
+            return res.redirect("/budgets/view");  // 
+        }
+
+        res.redirect("/budgets/view");
+    } catch (error) {
+        handleError(res, error);
+    }
+};
+
+// GET DETALLE DE UN PRESUPUESTO
+const getBudgetById = async (req, res) => {
+    try {
+        const budget = await Budget.findById(req.params.id);
+        if (!budget) return res.redirect("/budgets/view");
+        res.render("detailBudget", { budget, statusMap });
+    } catch (error) {
+        handleError(res, error);
+    }
+};
 
 
 module.exports = {
@@ -114,5 +136,8 @@ module.exports = {
     getBudgetsView,
     createBudget,
     assignBudgetToJob,
-    newBudgetForm
+    newBudgetForm,
+    getEditBudgetForm,
+    updateBudget,
+    getBudgetById
 };

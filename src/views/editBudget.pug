@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .new-container
+    .form-card
+      h2 Editar Presupuesto
+      
+      form(method="POST" action="/budgets/" + budget._id + "/edit")
+        label(for="idCustomer") DNI/CUIT de Cliente:
+        input(type="number" name="idCustomer" required value=budget.idCustomer)
+
+        label(for="nameCustomer") Nombre de Cliente:
+        input(type="text" name="nameCustomer" required value=budget.nameCustomer)
+
+        label(for="locationJob") Ubicación de la obra:
+        input(type="text" name="locationJob" required value=budget.locationJob)
+
+        label(for="amountmo") Monto Mano de Obra:
+        input(type="number" name="amountmo" required value=budget.amountmo)
+
+        label(for="amountmat") Monto Materiales:
+        input(type="number" name="amountmat" required value=budget.amountmat)
+
+        label(for="amountot") Monto Total:
+        input(type="number" name="amountot" required value=budget.amountot)
+
+        label(for="status") Estado:
+        select(name="status" required)
+          option(value="waiting" selected=budget.status === 'waiting') Pendiente de Aprobación
+          option(value="approved" selected=budget.status === 'approved') Aprobado
+          option(value="rejected" selected=budget.status === 'rejected') Rechazado
+
+        label(for="description") Descripción:
+        input(type="text" name="description" value=budget.description)
+
+        button(type="submit") Guardar cambios
+
+      br
+      a(href="javascript:history.back()" class="btn") Volver

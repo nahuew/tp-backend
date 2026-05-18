@@ -1,13 +1,18 @@
 //conexion con MONGO
 const Job = require('../models/Job');
+const Budget = require('../models/Budget');
+
 const handleError = (res, error) => {
     console.error("ERROR:", error.name, error.message);
-    if (error.name === "CastError") {
-        return res.status(404).json({ message: "Obra no encontrada" });
-    }
+    res.redirect("/jobs/view");
 };
 
-
+const statusMap = {
+    planning:  "Planificada",
+    active:    "Activa",
+    completed: "Finalizada",
+    cancelled: "Cancelada"
+};
 
 // GET ALL
 const getJobs = async (req, res) => {
@@ -23,103 +28,76 @@ const getJobs = async (req, res) => {
 const getJobsView = async (req, res) => {
     try {
         const jobs = await Job.find();
-        res.render("index", { 
-            jobs,
-            query: req.query
-        });
+        res.render("index", { jobs, statusMap, query: req.query });
     } catch (error) {
         handleError(res, error);
     }
 };
 
 
-// GET BY ID
-const getJobById = async (req, res) => {
+// FORMULARIO NUEVA OBRA — trae presupuestos para el select
+const newJobForm = async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id);
-        if (!job) return res.status(404).json({ message: "Obra no encontrada" });
-        res.json(job);
+        const budgets = await Budget.find({});
+        res.render("newJob", { budgets });
     } catch (error) {
         handleError(res, error);
     }
 };
 
 // CREATE
-const createJob = async(req, res) => {
+const createJob = async (req, res) => {
     try {
-    const { name, location, director, status, startDate, estimateEndDate } = req.body;
-    const newJob = await Job.create({ name, location, director, status, startDate, estimateEndDate });
+        const { budget_id, name, location, director, status, startDate, estimateEndDate } = req.body; // 👈 budget_id agregado
+        await Job.create({ budget_id, name, location, director, status, startDate, estimateEndDate });
+        await Budget.findByIdAndUpdate(budget_id, { job_id: job._id });
+
+        res.redirect("/jobs/view");
     
-
-    if (req.headers["content-type"] === "application/json") {
-        return res.status(201).json({
-            message: "Obra creada",
-            job: newJob
-        });
-    }
-
-     res.redirect("/jobs/view?success=1");
     } catch (error) {
         handleError(res, error);
     }
 };
 
-// RENDER NEW JOB FORM
-const newJobForm = (req, res) => {
-    res.render("newJob");
-};
+
 
 // GET DETAIL VIEW
-const getJobDetailView = async(req, res) => {
+const getJobDetailView = async (req, res) => {
     try {
         const job = await Job.findById(req.params.id);
-        if (!job) {
-            return res.status(404).send("Obra no encontrada");
-        }
-        res.render("detail", { job });
-   } catch (error) {
+        if (!job) return res.redirect("/jobs/view");
+        const budget = await Budget.findById(job.budget_id); 
+        res.render("detailJob", { job, budget, statusMap });
+    } catch (error) {
         handleError(res, error);
     }
 };
 
 // UPDATE
-const updateJob = async(req, res) => {
+const updateJob = async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id); // Busca la obra por ID en MongoDB
-    if (!job) {
-        return res.status(404).json({
-            message: "Obra no encontrada"
-        });
-    }
+        const job = await Job.findById(req.params.id);
+        if (!job) return res.redirect("/jobs/view");
 
-    const { name, location, director, status } = req.body;
-    job.name = name ?? job.name;
-    job.location = location ?? job.location;
-    job.director = director ?? job.director;
-    job.status = status ?? job.status;
+        const { name, location, director, status } = req.body;
+        job.name = name ?? job.name;
+        job.location = location ?? job.location;
+        job.director = director ?? job.director;
+        job.status = status ?? job.status;
 
-    await job.save(); // Guarda los cambios en MongoDB
-
-    res.json({
-        message: "Obra actualizada",
-        job
-    }); 
+        await job.save();
+        res.redirect("/jobs/view");
     } catch (error) {
         handleError(res, error);
     }
 };
+
 // DELETE
 const deleteJob = async (req, res) => {
     try {
-    const job = await Job.findByIdAndDelete(req.params.id); //  Elimina la obra por ID en MongoDB
-    if (!job) {
-        return res.status(404).json({
-            message: "Obra no encontrada"
-        });
-    }
-    res.json({
-        message: "Obra eliminada"
-    });
+        const job = await Job.findByIdAndDelete(req.params.id);
+        if (!job) return res.redirect("/jobs/view");
+        res.redirect("/jobs/view");
     } catch (error) {
         handleError(res, error);
     }
@@ -129,7 +107,6 @@ const deleteJob = async (req, res) => {
 module.exports = {
     getJobs,
     getJobsView,
-    getJobById,
     createJob,
     updateJob,
     deleteJob,

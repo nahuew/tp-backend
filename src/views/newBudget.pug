@@ -6,26 +6,34 @@ block content
       h2 Nuevo presupuesto
 
       form(method="POST" action="/budgets")
+        label(for="idCustomer") DNI/CUIT de Cliente:
+        input(type="number" name="idCustomer" required)
 
-        label(for="name") Nombre de Obra:
-        input(type="text" name="name" required)
-        label(for="amount") Monto Mano de Obra :
+        label(for="nameCustomer") Nombre de Cliente:
+        input(type="text" name="nameCustomer" required)
+
+        label(for="locationJob") Ubicación de la obra:
+        input(type="text" name="locationJob" required)
+
+        label(for="amountmo") Monto Mano de Obra:
         input(type="number" name="amountmo" required)
-        label(for="amount") Monto Materiales:
+
+        label(for="amountmat") Monto Materiales:
         input(type="number" name="amountmat" required)
-        label(for="amount") Monto Total:
+
+        label(for="amountot") Monto Total:
         input(type="number" name="amountot" required)    
+
         label(for="status") Estado:
         select(name="status" required)
-          option(value="waiting") Pendiente de Aprobación:
-          option(value="approved") Aprobado:
-          option(value="rejected") Rechazado:
+          option(value="waiting") Pendiente de Aprobación
+          option(value="approved") Aprobado
+          option(value="rejected") Rechazado
 
-    
         label(for="description") Descripción:
         input(type="text" name="description")
 
-        button(type="submit") Crear presupuesto:
+        button(type="submit") Crear presupuesto
 
       br
       a(href="javascript:history.back()" class="btn") Volver
