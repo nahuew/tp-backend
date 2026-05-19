@@ -55,27 +55,6 @@ const getBudgetsByJob = async (req, res) => {
     }
 };
 
-//ASSING ASIGNA PRESUPUESTO A UNA OBRA
-const assignBudgetToJob = async (req, res) => {
-    try {
-        const { budgetId, jobId } = req.params;
-
-        const budget = await Budget.findById(budgetId);
-
-        if (!budget) {
-            return res.status(404).json({ message: "Presupuesto no encontrado" });
-        }
-
-        budget.job_id = jobId;
-        budget.status = "approved";
-
-        await budget.save();
-
-        res.json({ message: "Presupuesto asignado a la obra" });
-    } catch (error) {
-        handleError(res, error);
-    }
-};
 
 // GET FORMULARIO NUEVO PRESUPUESTO
 const newBudgetForm = (req, res) => {
@@ -135,7 +114,6 @@ module.exports = {
     getBudgetsByJob,
     getBudgetsView,
     createBudget,
-    assignBudgetToJob,
     newBudgetForm,
     getEditBudgetForm,
     updateBudget,

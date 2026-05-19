@@ -31,8 +31,8 @@ router.post("/:id/edit", updateBudget);       //
 router.get("/job/:jobId", getBudgetsByJob);
 
 
-// ASIGNAR PRESUPUESTO A OBRA (DESPUÉS)
-router.put("/:budgetId/assign/:jobId", assignBudgetToJob);
+// ASIGNAR PRESUPUESTO A OBRA (DESPUÉS- funcionalidad extra, no es parte del flujo principal y falta desarrollar)
+//router.put("/:budgetId/assign/:jobId", assignBudgetToJob);
 
 // VER DETALLE DE UN PRESUPUESTO PARA EDITARLO  
 router.get("/:id", getBudgetById);  

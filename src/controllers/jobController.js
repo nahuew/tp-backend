@@ -48,11 +48,12 @@ const newJobForm = async (req, res) => {
 // CREATE
 const createJob = async (req, res) => {
     try {
-        const { budget_id, name, location, director, status, startDate, estimateEndDate } = req.body; // 👈 budget_id agregado
-        await Job.create({ budget_id, name, location, director, status, startDate, estimateEndDate });
+        const { budget_id, name, location, director, status, startDate, estimateEndDate } = req.body; //  budget_id agregado
+        const job = await Job.create({ budget_id, name, location, director, status, startDate, estimateEndDate });
         await Budget.findByIdAndUpdate(budget_id, { job_id: job._id });
 
-        res.redirect("/jobs/view");
+        
+        res.redirect("/jobs/view?success=true");
     
     } catch (error) {
         handleError(res, error);
@@ -86,7 +87,8 @@ const updateJob = async (req, res) => {
         job.status = status ?? job.status;
 
         await job.save();
-        res.redirect("/jobs/view");
+        
+        res.redirect("/jobs/view");  
     } catch (error) {
         handleError(res, error);
     }
@@ -98,6 +100,9 @@ const deleteJob = async (req, res) => {
         const job = await Job.findByIdAndDelete(req.params.id);
         if (!job) return res.redirect("/jobs/view");
         res.redirect("/jobs/view");
+
+
+        
     } catch (error) {
         handleError(res, error);
     }
