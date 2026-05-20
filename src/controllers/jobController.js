@@ -37,6 +37,7 @@ const getJobsView = async (req, res) => {
 
 // FORMULARIO NUEVA OBRA — trae presupuestos para el select
 const newJobForm = async (req, res) => {
+    console.log("BODY:", req.body);
     try {
         const budgets = await Budget.find({});
         res.render("newJob", { budgets });
