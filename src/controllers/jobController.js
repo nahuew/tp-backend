@@ -1,12 +1,18 @@
-//conexion con MONGO
 import Job from "../models/Job.js";
 import Budget from "../models/Budget.js";
 
 const handleError = (res, error) => {
+
     console.error("ERROR:", error.name, error.message);
     console.error(error);
 
     res.redirect("/jobs/view");
+};
+
+const budgetStatusMap = {
+    waiting: "Pendiente",
+    approved: "Aprobado",
+    rejected: "Rechazado"
 };
 
 const statusMap = {
@@ -18,9 +24,10 @@ const statusMap = {
 
 // GET ALL
 const getJobs = async (req, res) => {
+
     try {
 
-        const jobs = await Job.find().populate("budget_id");
+        const jobs = await Job.find()
 
         res.json(jobs);
 
@@ -32,9 +39,10 @@ const getJobs = async (req, res) => {
 
 // GET VIEW
 const getJobsView = async (req, res) => {
+
     try {
 
-        const jobs = await Job.find().populate("budget_id");
+        const jobs = await Job.find()
 
         res.render("index", {
             jobs,
@@ -54,7 +62,6 @@ const getJobById = async (req, res) => {
     try {
 
         const job = await Job.findById(req.params.id)
-            .populate("budget_id");
 
         if (!job) {
 
@@ -71,16 +78,12 @@ const getJobById = async (req, res) => {
     }
 };
 
-// FORMULARIO NUEVA OBRA — trae presupuestos para el select
+// FORMULARIO NUEVA OBRA
 const newJobForm = async (req, res) => {
-
-    console.log("BODY:", req.body);
 
     try {
 
-        const budgets = await Budget.find({});
-
-        res.render("newJob", { budgets });
+        res.render("newJob");
 
     } catch (error) {
 
@@ -94,7 +97,6 @@ const createJob = async (req, res) => {
     try {
 
         const {
-            budget_id,
             name,
             location,
             director,
@@ -103,8 +105,7 @@ const createJob = async (req, res) => {
             estimateEndDate
         } = req.body;
 
-        const job = await Job.create({
-            budget_id,
+        await Job.create({
             name,
             location,
             director,
@@ -112,11 +113,6 @@ const createJob = async (req, res) => {
             startDate,
             estimateEndDate
         });
-
-        await Budget.findByIdAndUpdate(
-            budget_id,
-            { job_id: job._id }
-        );
 
         res.redirect("/jobs/view?success=true");
 
@@ -135,15 +131,19 @@ const getJobDetailView = async (req, res) => {
         const job = await Job.findById(req.params.id);
 
         if (!job) {
+
             return res.redirect("/jobs/view");
         }
 
-        const budget = await Budget.findById(job.budget_id);
-
+        const budgets = await Budget.find({
+            job_id: job._id
+        });
+        
         res.render("detailJob", {
             job,
-            budget,
-            statusMap
+            budgets,
+            statusMap,
+            budgetStatusMap
         });
 
     } catch (error) {
@@ -160,6 +160,7 @@ const updateJob = async (req, res) => {
         const job = await Job.findById(req.params.id);
 
         if (!job) {
+
             return res.redirect("/jobs/view");
         }
 
@@ -193,8 +194,13 @@ const deleteJob = async (req, res) => {
         const job = await Job.findByIdAndDelete(req.params.id);
 
         if (!job) {
+
             return res.redirect("/jobs/view");
         }
+
+        await Budget.deleteMany({
+            job_id: req.params.id
+        });
 
         res.redirect("/jobs/view");
 

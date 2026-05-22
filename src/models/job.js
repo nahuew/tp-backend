@@ -2,12 +2,6 @@ import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
 
-    budget_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Budget",
-    default: null
-    },
-
     name: {
         type: String,
         required: true
@@ -31,12 +25,10 @@ const jobSchema = new mongoose.Schema({
 
     startDate: {
         type: Date,
-        default: null
     },
 
     estimateEndDate: {
         type: Date,
-        default: null
     }
 
 }, {

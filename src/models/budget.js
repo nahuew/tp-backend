@@ -12,12 +12,7 @@ const budgetSchema = new mongoose.Schema({
         required: true
     },
 
-    locationJob: {
-        type: String,
-        required: true
-    },
-
-    amountmo: {
+    amountmo: { 
         type: Number,
         required: true
     },
@@ -46,7 +41,7 @@ const budgetSchema = new mongoose.Schema({
     job_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Job",
-        default: null
+        required: true
     }
 
 }, {

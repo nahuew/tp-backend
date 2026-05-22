@@ -12,9 +12,6 @@ block content
         label(for="nameCustomer") Nombre de Cliente:
         input(type="text" name="nameCustomer" required value=budget.nameCustomer)
 
-        label(for="locationJob") Ubicación de la obra:
-        input(type="text" name="locationJob" required value=budget.locationJob)
-
         label(for="amountmo") Monto Mano de Obra:
         input(type="number" name="amountmo" required value=budget.amountmo)
 
@@ -26,7 +23,7 @@ block content
 
         label(for="status") Estado:
         select(name="status" required)
-          option(value="waiting" selected=budget.status === 'waiting') Pendiente de Aprobación
+          option(value="waiting" selected=budget.status === 'waiting') Pendiente
           option(value="approved" selected=budget.status === 'approved') Aprobado
           option(value="rejected" selected=budget.status === 'rejected') Rechazado
 

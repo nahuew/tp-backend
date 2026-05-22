@@ -6,14 +6,21 @@ block content
       h2 Nuevo presupuesto
 
       form(method="POST" action="/budgets")
+
+        label(for="job_id") Obra asociada:
+
+        select(name="job_id" required)
+          option(value="") Seleccionar obra
+
+          each job in jobs
+            option(value=job._id)
+              | #{job.name} - #{job.location}
+
         label(for="idCustomer") DNI/CUIT de Cliente:
         input(type="number" name="idCustomer" required)
 
         label(for="nameCustomer") Nombre de Cliente:
         input(type="text" name="nameCustomer" required)
-
-        label(for="locationJob") Ubicación de la obra:
-        input(type="text" name="locationJob" required)
 
         label(for="amountmo") Monto Mano de Obra:
         input(type="number" name="amountmo" required)
@@ -22,19 +29,20 @@ block content
         input(type="number" name="amountmat" required)
 
         label(for="amountot") Monto Total:
-        input(type="number" name="amountot" required)    
+        input(type="number" name="amountot" required)
 
         label(for="status") Estado:
 
         select(name="status" required)
-          option(value="waiting") Pendiente de Aprobación
+          option(value="waiting") Pendiente
           option(value="approved") Aprobado
           option(value="rejected") Rechazado
-          
+
         label(for="description") Descripción:
         input(type="text" name="description")
 
         button(type="submit") Crear presupuesto
 
       br
+
       a(href="javascript:history.back()" class="btn") Volver

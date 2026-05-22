@@ -5,23 +5,46 @@ block content
   h2 Detalle obra
 
   p
-    strong Nombre: 
+    strong Nombre:
     | #{job.name}
 
   p
-    strong Ubicación: 
+    strong Ubicación:
     | #{job.location}
-  
+
   p
-    strong Director: 
+    strong Director:
     | #{job.director}
 
   br
-  a(href="/jobs/view" class="btn") Volver 
-  
-  if budget
-    a(href="/budgets/" + budget._id class="btn") Ver presupuesto
+
+  h3 Presupuestos asociados
+
+  if budgets.length > 0
+
+    ul
+      each budget in budgets
+
+        li
+
+        p Cliente: #{budget.nameCustomer}
+
+        p Estado: #{budgetStatusMap[budget.status]}
+
+        a.btn(href=`/budgets/${budget._id}`)
+          | Ver detalle
+
+        br
+        br
+
   else
-    p Sin presupuesto vinculado
-  
+
+    p No hay presupuestos vinculados
+
   br
+
+  a(href="/budgets/new" class="btn")
+    | Nuevo presupuesto
+
+  a(href="/jobs/view" class="btn")
+    | Volver

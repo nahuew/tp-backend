@@ -194,12 +194,15 @@ Password: admin123
 
 | Método | Ruta | Descripción |
 |---|---|---|
+| GET | `/login` | Vista de login |
 | GET | `/jobs/view` | Lista de obras |
 | GET | `/jobs/view/:id` | Detalle de una obra |
 | GET | `/jobs/new` | Formulario nueva obra |
 | GET | `/budgets/new` | Formulario nuevo presupuesto |
 | GET | `/budgets/view` | Lista de presupuestos |
-| GET | `/budgets/job/:jobId` | Presupuestos por obra |
+| GET | `/budgets/job/:jobId` | Presupuestos asociados a una obra |
+| GET | `/budgets/:id` | Detalle de un presupuesto |
+| GET | `/budgets/:id/edit` | Formulario edición de presupuesto |
 
 ---
 
@@ -209,10 +212,13 @@ Password: admin123
 |---|---|---|
 | GET | `/jobs` | Obtener todas las obras |
 | GET | `/jobs/:id` | Obtener obra por ID |
-| POST | `/jobs` | Crear obra |
+| POST | `/jobs` | Crear nueva obra |
 | PUT | `/jobs/:id` | Actualizar obra |
 | DELETE | `/jobs/:id` | Eliminar obra |
+| POST | `/budgets` | Crear presupuesto |
 | GET | `/budgets/job/:jobId` | Obtener presupuestos de una obra |
+| POST | `/budgets/:id/edit` | Actualizar presupuesto |
+| POST | `/login` | Iniciar sesión |
 
 ---
 

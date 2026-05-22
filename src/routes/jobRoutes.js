@@ -18,6 +18,7 @@ router.get("/view", getJobsView);
 router.get("/new", newJobForm);
 router.post("/", createJob);
 router.get("/view/:id", getJobDetailView);
+router.get("/:id", getJobById);
 router.put("/:id", updateJob);
 router.delete("/:id", deleteJob);
 router.get("/", getJobs);

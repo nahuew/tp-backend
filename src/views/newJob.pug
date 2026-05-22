@@ -5,13 +5,7 @@ block content
     .form-card
       h2 Nueva obra
 
-      //SELECCIONA PRESUPUESTO CREADO
       form(method="POST" action="/jobs")
-        label(for="budget_id") Presupuesto asociado:
-        select(name="budget_id" required)
-          option(value="" disabled selected) Seleccioná un presupuesto
-          each b in budgets
-            option(value=b._id)= b.nameCustomer + " — $" + b.amountot
 
         label(for="name") Nombre:
         input(type="text" name="name" required)
