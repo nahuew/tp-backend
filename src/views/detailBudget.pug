@@ -29,9 +29,6 @@ block content
       p
         strong Descripción:
         |  #{budget.description}
-      p
-        strong Obra asignada:
-        |  #{budget.job_id || "Sin asignar"}
 
       br
       a(href="/budgets/" + budget._id + "/edit" class="btn") Editar presupuesto

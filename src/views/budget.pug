@@ -8,7 +8,6 @@ block content
   else
     table(border="1")
       tr
-        th ID
         th DNI/CUIT de Cliente
         th Nombre de cliente
         th Ubicacion de la obra
@@ -19,7 +18,6 @@ block content
 
       each b in budgets
         tr
-          td= b._ID 
           td= b.idCustomer
           td= b.nameCustomer
           td= b.locationJob

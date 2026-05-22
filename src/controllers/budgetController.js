@@ -1,5 +1,5 @@
 //conexion con MONGO
-const Budget = require('../models/Budget');
+import Budget from "../models/Budget.js";
 
 const statusMap = {
     waiting: "Pendiente de Aprobación",
@@ -8,6 +8,7 @@ const statusMap = {
 };
 
 const handleError = (res, error) => {
+    console.error(error);
     console.error("ERROR:", error.name, error.message);
     res.redirect("/budgets/view");
 };
@@ -110,12 +111,12 @@ const getBudgetById = async (req, res) => {
 };
 
 
-module.exports = {
+export {
     getBudgetsByJob,
     getBudgetsView,
     createBudget,
     newBudgetForm,
     getEditBudgetForm,
     updateBudget,
-    getBudgetById
+    getBudgetById,
 };

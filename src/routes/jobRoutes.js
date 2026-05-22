@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
+import {
     getJobs,
     getJobsView,
     getJobById,
@@ -9,10 +9,8 @@ const {
     updateJob,
     deleteJob,
     newJobForm,
-    getJobDetailView,
-    getBudgetsByJob,
-    getBudgetsView
-} = require("../controllers/jobController");
+    getJobDetailView
+} from "../controllers/jobController.js";
 
 // rutas CRUD
 
@@ -25,4 +23,4 @@ router.delete("/:id", deleteJob);
 router.get("/", getJobs);
 
 
-module.exports = router;
+export default router;

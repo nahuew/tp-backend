@@ -1,17 +1,16 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
+import {
     createBudget,
     getBudgetsView,
-    assignBudgetToJob,
     getBudgetsByJob,
     newBudgetForm,
     getEditBudgetForm,
     updateBudget,
     getBudgetById
 
-} = require("../controllers/budgetController");
+} from "../controllers/budgetController.js";
 
 
 // CREAR PRESUPUESTO
@@ -38,4 +37,4 @@ router.get("/job/:jobId", getBudgetsByJob);
 router.get("/:id", getBudgetById);  
 
 
-module.exports = router;
+export default router;

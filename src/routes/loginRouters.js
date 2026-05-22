@@ -1,10 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const {
+import {
   getLoginsView,
   postLogin
-} = require("../controllers/loginController");
+} from "../controllers/loginController.js";
 
 
 router.get("/", getLoginsView);
@@ -14,4 +14,4 @@ router.post("/", postLogin);
 // logout
 
 
-module.exports = router;
+export default router;
