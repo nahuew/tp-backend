@@ -1,0 +1,88 @@
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+import Job from "../models/Job.js";
+import Budget from "../models/Budget.js";
+
+dotenv.config();
+
+await mongoose.connect(process.env.MONGO_URI);
+
+console.log("Conectado a MongoDB");
+
+try {
+
+    // BORRAR DATOS ANTERIORES
+    await Job.deleteMany({});
+    await Budget.deleteMany({});
+
+    console.log("Datos anteriores eliminados");
+
+    // CREAR OBRAS
+    const jobs = await Job.insertMany([
+        {
+            name: "Construcción edificio",
+            location: "Buenos Aires",
+            director: "Juan Pérez",
+            status: "planning",
+            startDate: new Date("2025-01-10"),
+            estimateEndDate: new Date("2025-12-20")
+        },
+        {
+            name: "Remodelación oficina",
+            location: "Córdoba",
+            director: "Ana Gómez",
+            status: "active",
+            startDate: new Date("2025-03-01"),
+            estimateEndDate: new Date("2025-08-15")
+        }
+    ]);
+
+    console.log("Obras creadas");
+
+    // CREAR PRESUPUESTOS
+    await Budget.insertMany([
+        {
+            idCustomer: 30111222,
+            nameCustomer: "Carlos Ruiz",
+            amountmo: 50000,
+            amountmat: 120000,
+            amountot: 170000,
+            status: "approved",
+            description: "Presupuesto aprobado",
+            job_id: jobs[0]._id
+        },
+        {
+            idCustomer: 27888999,
+            nameCustomer: "Lucía Fernández",
+            amountmo: 40000,
+            amountmat: 90000,
+            amountot: 130000,
+            status: "waiting",
+            description: "Pendiente revisión",
+            job_id: jobs[0]._id
+        },
+        {
+            idCustomer: 33222111,
+            nameCustomer: "Pedro López",
+            amountmo: 30000,
+            amountmat: 70000,
+            amountot: 100000,
+            status: "rejected",
+            description: "Rechazado por cliente",
+            job_id: jobs[1]._id
+        }
+    ]);
+
+    console.log("Presupuestos creados");
+
+} catch (error) {
+
+    console.error(error);
+
+} finally {
+
+    await mongoose.connection.close();
+
+    console.log("Conexión cerrada");
+}

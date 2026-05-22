@@ -142,7 +142,44 @@ MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
 
 ---
 
-# 8. Iniciar el proyecto
+# 8. Poblar la base de datos con datos de prueba (Opcional)
+
+El proyecto incluye un script para cargar datos mockeados automáticamente en MongoDB.
+
+---
+
+## Ejecutar el seed
+
+Una vez configurada la conexión a MongoDB y creada la base de datos, ejecutar:
+
+```bash
+npm run seed
+```
+
+---
+
+## ¿Qué hace este comando?
+
+El script:
+
+- Elimina los datos anteriores de la base
+- Crea obras de ejemplo
+- Crea presupuestos asociados
+- Genera relaciones entre obras y presupuestos
+
+---
+
+## Archivo del seed
+
+El script se encuentra en:
+
+```text
+src/seeds/seed.js
+```
+
+---
+
+# 9. Iniciar el proyecto
 
 Ejecutar:
 
@@ -158,7 +195,7 @@ npm run dev
 
 ---
 
-# 9. Verificar conexión MongoDB
+# 10. Verificar conexión MongoDB
 
 Si todo funciona correctamente debería aparecer:
 
@@ -169,7 +206,7 @@ Servidor corriendo en http://localhost:3000
 
 ---
 
-# 10. Acceder a la aplicación
+# 11. Acceder a la aplicación
 
 Abrir en el navegador:
 
