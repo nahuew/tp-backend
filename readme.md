@@ -1,43 +1,303 @@
-#### AVISO LOGIN
+# Proyecto Backend - Cimientos Sólidos S.A.
 
-El login lleva usuario y contraseña no van a poder entrar sino son:
-user:admin 
-password: admin123
+Sistema backend desarrollado con:
 
-### Para probar este proyecto:
+- Node.js
+- Express
+- MongoDB
+- Mongoose
+- Pug
 
-1. Instalar dependencias con: `npm install`
-2. Para iniciar el servidor en modo desarrollo: `npm start` o `npm run dev` 
+---
 
-### Rutas principales
+# Tecnologías utilizadas
 
-#### Vistas (Pug)
+- Node.js
+- Express
+- MongoDB
+- MongoDB Compass
+- Mongoose
+- Pug
+- Nodemon
 
-GET /jobs/view → Lista de obras
-GET /jobs/view/:id → Detalle de una obra
-GET /jobs/new → Formulario para crear una obra
-GET /budgets/new → Formulario de presupuesto (incorporación 17/05)
-GET /budgets/view → Todos los presupuestos 
-GET /budgets/job/:jobId → Presupuestos de una obra
+---
 
-#### API (JSON)
+# Requisitos previos
 
-GET /jobs → Obtener todas las obras
-GET /jobs/:id → Obtener obra por ID
-POST /jobs → Crear nueva obra
-PUT /jobs/:id → Actualizar obra
-DELETE /jobs/:id → Eliminar obra
-GET /budgets/job/:jobId → Presupuestos por obra 
+Antes de ejecutar el proyecto es necesario tener instalado:
 
-#AVISO
+- Node.js
+- MongoDB Community Server
+- MongoDB Compass
+- Git (opcional)
 
-Antes de instalar express tiren el comando npm express -v, si les aparece la versión es porque ya esta integrado
-(dudo que quede completo así que por las dudas instalenlo pero es para precaución)
+---
 
-### ACTUALIZACION- SE REFACTORIZA EL CÓDIGO Y SE EXPORTA A MONGO 
+# 1. Clonar el repositorio
 
-Conexión a MONGODB ATLAS: Se agrega la carpeta db.js
-Se conecta sin SRV ya que fallaba por conexión.
-Nombre Proyecto Mongo Atlas: Backend_CimientosSolidos 
-Nombre Cluster: CimientosSolidosSA
-Usuario y contraseña del proyecto Mongo Atlas: grupo14
+```bash
+git clone URL_DEL_REPOSITORIO
+```
+
+Entrar a la carpeta:
+
+```bash
+cd nombre-del-proyecto
+```
+
+---
+
+# 2. Instalar dependencias
+
+Ejecutar:
+
+```bash
+npm install
+```
+
+Esto creará automáticamente la carpeta:
+
+```bash
+node_modules
+```
+
+---
+
+# 3. Verificar instalación de Express
+
+Opcionalmente pueden verificar Express con:
+
+```bash
+npx express --version
+```
+
+o:
+
+```bash
+npm list express
+```
+
+---
+
+# 4. Configurar MongoDB
+
+## Instalar MongoDB Community Server
+
+Descargar desde:
+
+- https://www.mongodb.com/try/download/community
+
+Durante la instalación dejar seleccionada la opción:
+
+```text
+Install MongoDB as a Service
+```
+
+---
+
+# 5. Instalar MongoDB Compass
+
+Descargar desde:
+
+- https://www.mongodb.com/products/tools/compass
+
+Compass permite visualizar gráficamente la base de datos.
+
+---
+
+# 6. Conectarse desde MongoDB Compass
+
+Abrir MongoDB Compass.
+
+En el campo de conexión colocar:
+
+```text
+mongodb://127.0.0.1:27017
+```
+
+Luego presionar:
+
+```text
+Connect
+```
+
+---
+
+# 7. Configurar variables de entorno
+
+Crear un archivo llamado:
+
+```text
+.env
+```
+
+En la raíz del proyecto.
+
+Agregar:
+
+```env
+PORT=3000
+MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
+```
+
+---
+
+# 8. Iniciar el proyecto
+
+Ejecutar:
+
+```bash
+npm start
+```
+
+o en modo desarrollo:
+
+```bash
+npm run dev
+```
+
+---
+
+# 9. Verificar conexión MongoDB
+
+Si todo funciona correctamente debería aparecer:
+
+```bash
+✅ MongoDB conectado
+Servidor corriendo en http://localhost:3000
+```
+
+---
+
+# 10. Acceder a la aplicación
+
+Abrir en el navegador:
+
+```text
+http://localhost:3000
+```
+
+---
+
+# Credenciales de Login
+
+```text
+Usuario: admin
+Password: admin123
+```
+
+---
+
+# Rutas principales
+
+## Vistas (Pug)
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/jobs/view` | Lista de obras |
+| GET | `/jobs/view/:id` | Detalle de una obra |
+| GET | `/jobs/new` | Formulario nueva obra |
+| GET | `/budgets/new` | Formulario nuevo presupuesto |
+| GET | `/budgets/view` | Lista de presupuestos |
+| GET | `/budgets/job/:jobId` | Presupuestos por obra |
+
+---
+
+# API REST (JSON)
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/jobs` | Obtener todas las obras |
+| GET | `/jobs/:id` | Obtener obra por ID |
+| POST | `/jobs` | Crear obra |
+| PUT | `/jobs/:id` | Actualizar obra |
+| DELETE | `/jobs/:id` | Eliminar obra |
+| GET | `/budgets/job/:jobId` | Obtener presupuestos de una obra |
+
+---
+
+# Ejemplo POST /jobs
+
+```json
+{
+  "budget_id": "ID_DEL_PRESUPUESTO",
+  "name": "Construcción edificio",
+  "location": "Resistencia",
+  "director": "Juan Pérez",
+  "status": "planning",
+  "startDate": "2025-07-01",
+  "estimateEndDate": "2026-01-01"
+}
+```
+
+---
+
+# Estructura del proyecto
+
+```text
+src/
+│
+├── config/
+├── controllers/
+├── models/
+├── routes/
+├── views/
+├── public/
+└── index.js
+```
+
+---
+
+# Funcionalidades implementadas
+
+- CRUD de obras
+- CRUD de presupuestos
+- Relación entre obras y presupuestos
+- Motor de vistas Pug
+- MongoDB con Mongoose
+- Arquitectura MVC
+- Programación asincrónica con async/await
+- Manejo básico de errores
+- Variables de entorno con dotenv
+
+---
+
+# Posibles errores comunes
+
+## Error: Cannot find module
+
+Ejecutar:
+
+```bash
+npm install
+```
+
+---
+
+## Error de conexión MongoDB
+
+Verificar que MongoDB Server esté iniciado.
+
+En Windows:
+
+```text
+services.msc
+```
+
+Buscar:
+
+```text
+MongoDB Server
+```
+
+Debe estar en estado:
+
+```text
+Running
+```
+
+---
+
+# Autor
+
+Proyecto académico desarrollado para práctica de backend con Node.js y MongoDB.
