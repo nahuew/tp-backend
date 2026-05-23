@@ -14,6 +14,7 @@ Sistema backend desarrollado con:
 
 - Node.js
 - Express
+- ES Modules
 - MongoDB
 - MongoDB Compass
 - Mongoose
@@ -164,8 +165,9 @@ El script:
 
 - Elimina los datos anteriores de la base
 - Crea obras de ejemplo
-- Crea presupuestos asociados
-- Genera relaciones entre obras y presupuestos
+- Crea directores de ejemplo
+- Crea obras asociadas a directores
+- Crea presupuestos asociados a obras
 
 ---
 
@@ -216,12 +218,16 @@ http://localhost:3000
 
 ---
 
-# Credenciales de Login
+# Login
 
 ```text
 Usuario: admin
 Password: admin123
 ```
+
+Actualmente el login es una implementación básica sin autenticación real.
+
+Cualquier usuario creado puede acceder al sistema.
 
 ---
 
@@ -263,10 +269,9 @@ Password: admin123
 
 ```json
 {
-  "budget_id": "ID_DEL_PRESUPUESTO",
   "name": "Construcción edificio",
-  "location": "Resistencia",
-  "director": "Juan Pérez",
+  "location": "Córdoba",
+  "director_id": "ID_DEL_DIRECTOR",
   "status": "planning",
   "startDate": "2025-07-01",
   "estimateEndDate": "2026-01-01"
@@ -284,6 +289,7 @@ src/
 ├── controllers/
 ├── models/
 ├── routes/
+├── seeds/
 ├── views/
 ├── public/
 └── index.js
@@ -296,6 +302,9 @@ src/
 - CRUD de obras
 - CRUD de presupuestos
 - Relación entre obras y presupuestos
+- Normalización de directores mediante referencias MongoDB
+- Validación de estados de obras y presupuestos
+- Restricción de presupuestos en obras finalizadas o canceladas
 - Motor de vistas Pug
 - MongoDB con Mongoose
 - Arquitectura MVC
