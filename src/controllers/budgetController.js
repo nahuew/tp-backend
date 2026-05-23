@@ -71,7 +71,8 @@ const getBudgetsView = async (req, res) => {
     try {
 
         const budgets = await Budget.find({})
-            .populate("job_id");
+            .populate("job_id")
+            .sort({ createdAt: -1 });
 
         res.render("budget", { 
             budgets, 
@@ -139,7 +140,9 @@ const getEditBudgetForm = async (req, res) => {
             return res.redirect("/budgets/view");  
         }
 
-        const jobs = await Job.find({});
+        const jobs = await Job.find({
+            status: { $in: ["planning", "active"] }
+        });
 
         res.render("editBudget", {
             budget,

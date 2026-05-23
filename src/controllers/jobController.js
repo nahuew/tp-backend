@@ -1,5 +1,6 @@
 import Job from "../models/Job.js";
 import Budget from "../models/Budget.js";
+import Director from "../models/Director.js";
 
 const handleError = (res, error) => {
 
@@ -28,6 +29,8 @@ const getJobs = async (req, res) => {
     try {
 
         const jobs = await Job.find()
+            .populate("director_id")
+            .sort({ startDate: -1 });
 
         res.json(jobs);
 
@@ -43,6 +46,8 @@ const getJobsView = async (req, res) => {
     try {
 
         const jobs = await Job.find()
+            .populate("director_id")
+            .sort({ startDate: -1 });
 
         res.render("index", {
             jobs,
@@ -62,6 +67,7 @@ const getJobById = async (req, res) => {
     try {
 
         const job = await Job.findById(req.params.id)
+            .populate("director_id");
 
         if (!job) {
 
@@ -82,8 +88,11 @@ const getJobById = async (req, res) => {
 const newJobForm = async (req, res) => {
 
     try {
+        const directors = await Director.find();
 
-        res.render("newJob");
+        res.render("newJob", {
+            directors
+        });
 
     } catch (error) {
 
@@ -99,7 +108,7 @@ const createJob = async (req, res) => {
         const {
             name,
             location,
-            director,
+            director_id,
             status,
             startDate,
             estimateEndDate
@@ -108,15 +117,11 @@ const createJob = async (req, res) => {
         await Job.create({
             name,
             location,
-            director,
+            director_id,
             status,
             startDate,
             estimateEndDate
         });
-
-        if (job.status === "completed" || job.status === "cancelled") {
-            return res.status(400).send("No se pueden agregar presupuestos");
-        }
 
         res.redirect("/jobs/view?success=true");
 
@@ -132,7 +137,8 @@ const getJobDetailView = async (req, res) => {
 
     try {
 
-        const job = await Job.findById(req.params.id);
+        const job = await Job.findById(req.params.id)
+            .populate("director_id");
 
         if (!job) {
 
@@ -171,13 +177,13 @@ const updateJob = async (req, res) => {
         const {
             name,
             location,
-            director,
+            director_id,
             status
         } = req.body;
 
         job.name = name ?? job.name;
         job.location = location ?? job.location;
-        job.director = director ?? job.director;
+        job.director_id = director_id ?? job.director_id;
         job.status = status ?? job.status;
 
         await job.save();

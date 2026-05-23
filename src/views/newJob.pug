@@ -10,11 +10,27 @@ block content
         label(for="name") Nombre:
         input(type="text" name="name" required)
 
-        label(for="location") Ubicación:
-        input(type="text" name="location" required)
+        label(for="location") Provincia:
 
-        label(for="director") Director:
-        input(type="text" name="director" required)
+        select(name="location" required)
+
+            option(value="") Seleccionar provincia
+
+            option(value="Buenos Aires") Buenos Aires
+            option(value="Córdoba") Córdoba
+            option(value="Santa Fe") Santa Fe
+            option(value="Mendoza") Mendoza
+
+        label(for="director_id") Director:
+
+        select(name="director_id" required)
+
+          option(value="") Seleccionar director
+
+          each director in directors
+
+            option(value=director._id)
+              | #{director.name}
 
         label(for="status") Estado:
         select(name="status" required)

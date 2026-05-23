@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 
 import Job from "../models/Job.js";
 import Budget from "../models/Budget.js";
+import Director from "../models/Director.js";
 
 dotenv.config();
 
@@ -15,15 +16,34 @@ try {
     // BORRAR DATOS ANTERIORES
     await Job.deleteMany({});
     await Budget.deleteMany({});
+    await Director.deleteMany({});
 
     console.log("Datos anteriores eliminados");
+
+    // CREAR DIRECTORES
+    const directors = await Director.insertMany([
+        {
+            name: "Juan Pérez",
+            specialty: "Obras civiles"
+        },
+        {
+            name: "Ana Gómez",
+            specialty: "Arquitectura"
+        },
+        {
+            name: "Juan Carlos Gutiérrez",
+            specialty: "Construcción residencial"
+        }
+    ]);
+
+    console.log("Directores creados");
 
     // CREAR OBRAS
     const jobs = await Job.insertMany([
         {
             name: "Construcción edificio",
             location: "Buenos Aires",
-            director: "Juan Pérez",
+            director_id: directors[0]._id,
             status: "completed",
             startDate: new Date("2025-01-10"),
             estimateEndDate: new Date("2025-12-20")
@@ -31,15 +51,15 @@ try {
         {
             name: "Remodelación oficina",
             location: "Córdoba",
-            director: "Ana Gómez",
+            director_id: directors[1]._id,
             status: "active",
             startDate: new Date("2026-06-01"),
             estimateEndDate: new Date("2026-11-15")
         },
         {
             name: "Construcción casa residencial",
-            location: "CABA",
-            director: "Juan Carlos Gutiérrez",
+            location: "Santa Fe",
+            director_id: directors[2]._id,
             status: "planning",
             startDate: new Date("2027-06-01"),
             estimateEndDate: new Date("2027-11-15")

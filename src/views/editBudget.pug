@@ -18,9 +18,6 @@ block content
         label(for="amountmat") Monto Materiales:
         input(type="number" name="amountmat" required value=budget.amountmat)
 
-        label(for="amountot") Monto Total:
-        input(type="number" name="amountot" required value=budget.amountot)
-
         label(for="status") Estado:
         select(name="status" required)
           option(value="waiting" selected=budget.status === 'waiting') Pendiente

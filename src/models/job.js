@@ -9,11 +9,18 @@ const jobSchema = new mongoose.Schema({
 
     location: {
         type: String,
+        enum: [
+            "Buenos Aires",
+            "Córdoba",
+            "Santa Fe",
+            "Mendoza",
+        ],
         required: true
     },
 
-    director: {
-        type: String,
+    director_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Director",
         required: true
     },
 
