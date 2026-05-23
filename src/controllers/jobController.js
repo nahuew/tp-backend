@@ -114,6 +114,10 @@ const createJob = async (req, res) => {
             estimateEndDate
         });
 
+        if (job.status === "completed" || job.status === "cancelled") {
+            return res.status(400).send("No se pueden agregar presupuestos");
+        }
+
         res.redirect("/jobs/view?success=true");
 
     } catch (error) {

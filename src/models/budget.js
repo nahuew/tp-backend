@@ -22,11 +22,6 @@ const budgetSchema = new mongoose.Schema({
         required: true
     },
 
-    amountot: {
-        type: Number,
-        required: true
-    },
-
     status: {
         type: String,
         enum: ["waiting", "approved", "rejected"],
@@ -47,6 +42,15 @@ const budgetSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+budgetSchema.virtual("amountot").get(function () {
+
+    return this.amountmo + this.amountmat;
+
+});
+
+budgetSchema.set("toJSON", { virtuals: true });
+budgetSchema.set("toObject", { virtuals: true });
 
 const Budget = mongoose.model("Budget", budgetSchema);
 

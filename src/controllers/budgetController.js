@@ -26,19 +26,31 @@ const createBudget = async (req, res) => {
             idCustomer,
             nameCustomer, 
             amountmo,
-            amountmat, 
-            amountot, 
+            amountmat,  
             status, 
             description,
             job_id 
         } = req.body;
+
+        const job = await Job.findById(job_id);
+
+        if (!job) {
+
+            return res.status(404).send("Obra no encontrada");
+        }
+
+        if (["completed", "cancelled"].includes(job.status)) {
+
+            return res.status(400).send(
+                "No se pueden agregar presupuestos a una obra finalizada o cancelada"
+            );
+        }
 
         await Budget.create({
             idCustomer,
             nameCustomer,
             amountmo,
             amountmat,
-            amountot,
             status,
             description,
             job_id
@@ -101,7 +113,9 @@ const getBudgetsByJob = async (req, res) => {
 const newBudgetForm = async (req, res) => {
     try {
 
-        const jobs = await Job.find({});
+        const jobs = await Job.find({
+            status: { $in: ["planning", "active"] }
+        });
 
         res.render("newBudget", {
             jobs
@@ -148,8 +162,7 @@ const updateBudget = async (req, res) => {
             idCustomer, 
             nameCustomer, 
             amountmo, 
-            amountmat, 
-            amountot, 
+            amountmat,  
             status, 
             description 
         } = req.body;
@@ -162,7 +175,6 @@ const updateBudget = async (req, res) => {
                 nameCustomer, 
                 amountmo, 
                 amountmat, 
-                amountot, 
                 status, 
                 description 
             },

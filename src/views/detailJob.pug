@@ -43,8 +43,9 @@ block content
 
   br
 
-  a(href="/budgets/new" class="btn")
-    | Nuevo presupuesto
+  if job.status === "planning" || job.status === "active"
+    a(href="/budgets/new" class="btn")
+      | Nuevo presupuesto
 
   a(href="/jobs/view" class="btn")
     | Volver

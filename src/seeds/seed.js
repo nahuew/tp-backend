@@ -24,7 +24,7 @@ try {
             name: "Construcción edificio",
             location: "Buenos Aires",
             director: "Juan Pérez",
-            status: "planning",
+            status: "completed",
             startDate: new Date("2025-01-10"),
             estimateEndDate: new Date("2025-12-20")
         },
@@ -33,8 +33,16 @@ try {
             location: "Córdoba",
             director: "Ana Gómez",
             status: "active",
-            startDate: new Date("2025-03-01"),
-            estimateEndDate: new Date("2025-08-15")
+            startDate: new Date("2026-06-01"),
+            estimateEndDate: new Date("2026-11-15")
+        },
+        {
+            name: "Construcción casa residencial",
+            location: "CABA",
+            director: "Juan Carlos Gutiérrez",
+            status: "planning",
+            startDate: new Date("2027-06-01"),
+            estimateEndDate: new Date("2027-11-15")
         }
     ]);
 
@@ -47,9 +55,8 @@ try {
             nameCustomer: "Carlos Ruiz",
             amountmo: 50000,
             amountmat: 120000,
-            amountot: 170000,
-            status: "approved",
-            description: "Presupuesto aprobado",
+            status: "rejected",
+            description: "Rechazado por cliente",
             job_id: jobs[0]._id
         },
         {
@@ -57,9 +64,8 @@ try {
             nameCustomer: "Lucía Fernández",
             amountmo: 40000,
             amountmat: 90000,
-            amountot: 130000,
-            status: "waiting",
-            description: "Pendiente revisión",
+            status: "approved",
+            description: "Aprobado por cliente",
             job_id: jobs[0]._id
         },
         {
@@ -67,10 +73,27 @@ try {
             nameCustomer: "Pedro López",
             amountmo: 30000,
             amountmat: 70000,
-            amountot: 100000,
+            status: "approved",
+            description: "Aprobado por cliente",
+            job_id: jobs[1]._id
+        },
+        {
+            idCustomer: 30111223,
+            nameCustomer: "Martin Giménez",
+            amountmo: 60000,
+            amountmat: 150000,
             status: "rejected",
             description: "Rechazado por cliente",
-            job_id: jobs[1]._id
+            job_id: jobs[2]._id
+        },
+        {
+            idCustomer: 27888999,
+            nameCustomer: "Lucía Fernández",
+            amountmo: 40000,
+            amountmat: 90000,
+            status: "waiting",
+            description: "Pendiente revisión",
+            job_id: jobs[2]._id
         }
     ]);
 
