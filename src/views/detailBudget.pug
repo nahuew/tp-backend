@@ -28,7 +28,7 @@ block content
         |  #{budget.description}
 
       br
-      a(href="/budgets/" + budget._id + "/edit" class="btn") Editar presupuesto
+      a(href="javascript:history.back()" class="btn") Volver
       |  
-    
-      a(href="/budgets/view" class="btn") Volver
+      a(href="/budgets/" + budget._id + "/edit" class="btn") Editar presupuesto
+      
