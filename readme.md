@@ -143,7 +143,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
 
 ---
 
-# 8. Poblar la base de datos con datos de prueba (Opcional)
+# 8. Poblar la base de datos con datos de prueba
 
 El proyecto incluye un script para cargar datos mockeados automáticamente en MongoDB.
 
@@ -246,6 +246,9 @@ Cualquier usuario creado puede acceder al sistema.
 | GET | `/budgets/job/:jobId` | Presupuestos asociados a una obra |
 | GET | `/budgets/:id` | Detalle de un presupuesto |
 | GET | `/budgets/:id/edit` | Formulario edición de presupuesto |
+| POST | `/budgets` | Crear presupuesto desde formulario |
+| POST | `/budgets/:id/edit` | Actualizar presupuesto desde formulario |
+| POST | `/login` | Iniciar sesión |
 
 ---
 
@@ -258,10 +261,6 @@ Cualquier usuario creado puede acceder al sistema.
 | POST | `/jobs` | Crear nueva obra |
 | PUT | `/jobs/:id` | Actualizar obra |
 | DELETE | `/jobs/:id` | Eliminar obra |
-| POST | `/budgets` | Crear presupuesto |
-| GET | `/budgets/job/:jobId` | Obtener presupuestos de una obra |
-| POST | `/budgets/:id/edit` | Actualizar presupuesto |
-| POST | `/login` | Iniciar sesión |
 
 ---
 
