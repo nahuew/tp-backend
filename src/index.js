@@ -6,44 +6,44 @@ import { fileURLToPath } from "url";
 
 import { conectarDB } from "./config/db.js";
 
-import loginRoutes from "./routes/loginRouters.js";
+import authRouter from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import budgetRoutes from "./routes/budgetRoutes.js";
 
 dotenv.config();
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.json()); // Recibe el JSON en el cuerpo de las peticiones
-app.use(express.urlencoded({ extended: true })); // Permite recibir datos de formularios
+// --- Middlewares ---
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//--- Pug ---
-app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'pug');      
+// --- Pug ---
+app.set("views", path.join(__dirname, "./views"));
+app.set("view engine", "pug");
 
-// --- Ruta Archivos estáticos ---
-app.use(express.static(path.join(__dirname, 'public')));
+// --- Static files ---
+app.use(express.static(path.join(__dirname, "public")));
 
-// --- Ruta Principal (Redirige al login por defecto) ---
+// --- Ruta principal ---
 app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
-// --- Rutas ---
-app.use("/login", loginRoutes);
+// --- RUTAS (CORREGIDO) ---
+// ❌ antes: app.use("/login", loginRoutes);
+
+app.use("/", authRouter);       // 👈 login + signUp viven acá
 app.use("/jobs", jobRoutes);
 app.use("/budgets", budgetRoutes);
 
-
+// --- Server ---
 const iniciarServidor = async () => {
-
     try {
-
         await conectarDB();
 
         app.listen(PORT, () => {
@@ -51,7 +51,6 @@ const iniciarServidor = async () => {
         });
 
     } catch (error) {
-
         console.error("Error al iniciar:", error);
     }
 };

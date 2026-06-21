@@ -13,19 +13,29 @@ html(lang="es")
 
         script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
 
-        title Login
+        title Registro
 
     body.login
 
         section.login-card
 
             h1.tittle-login Bienvenido
-            h2.subtitle-login Inicia sesión
+            h2.subtitle-login Crea tu cuenta
 
             if error
                 p.error-message= error
 
-            form(action="/login", method="POST")
+            form(action="/signUp", method="POST")
+
+                div.user
+                    label(for="name") Nombre
+                    input(
+                        type="text",
+                        name="name",
+                        id="name",
+                        placeholder="Tu nombre",
+                        required
+                    )
 
                 div.user
                     label(for="email") Email
@@ -46,14 +56,38 @@ html(lang="es")
                         placeholder="*********",
                         required
                     )
+                    p.password-hint La contraseña debe tener:
+                    ul.password-hint-list
+                        li#length.min 8 caracteres
+                        li#upper.upper Una mayúscula
+                        li#lower.lower Una minúscula
+                        li#special.special Un carácter especial
+                    
+                    div.strength-container
+                        div#strength-bar.strength-bar
+                    p#strength-text.strength-text
 
-                button(type="submit") Ingresar
+                button#submit-btn(type="submit" disabled) Registrarse
 
             br
 
             p
-                | ¿No tienes cuenta? 
-                a(href="/signUp") Regístrate
+                | ¿Ya tienes cuenta? 
+                a(href="/login") Inicia sesión
+
+        script(src="/js/signup.js")
+        
+        if success
+            script.
+                Swal.fire({
+                    title: "Cuenta creada",
+                    text: "Serás redirigido al login",
+                    icon: "success",
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "/login";
+                });
 
         if errorMessage
             script.
@@ -62,16 +96,4 @@ html(lang="es")
                     text: "!{errorMessage}",
                     icon: "error",
                     confirmButtonText: "OK"
-                });
-
-        if successLogin
-            script.
-                Swal.fire({
-                    title: "Bienvenido",
-                    text: "Inicio de sesión exitoso",
-                    icon: "success",
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = "/jobs/view";
                 });
