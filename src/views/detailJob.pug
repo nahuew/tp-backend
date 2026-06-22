@@ -18,6 +18,22 @@ block content
 
   br
 
+  .actions
+
+    a.btn(href=`/jobs/${job._id}/edit`)
+      | Editar
+
+    if user && user.role === "admin"
+      form.confirm-delete(
+        method="POST"
+        action=`/jobs/${job._id}?_method=DELETE`
+      )
+        button.btn.btn-danger(type="submit")
+          | Eliminar
+
+  br
+  br
+
   h3 Presupuestos asociados
 
   if budgets.length > 0
@@ -27,15 +43,15 @@ block content
 
         li
 
-        p Cliente: #{budget.nameCustomer}
+          p Cliente: #{budget.nameCustomer}
 
-        p Estado: #{budgetStatusMap[budget.status]}
+          p Estado: #{budgetStatusMap[budget.status]}
 
-        a.btn(href=`/budgets/${budget._id}`)
-          | Ver detalle
+          a.btn(href=`/budgets/${budget._id}`)
+            | Ver detalle
 
-        br
-        br
+          br
+          br
 
   else
 
@@ -43,8 +59,11 @@ block content
 
   br
 
+  a(href="javascript:history.back()" class="btn")
+    | Volver
+
   if job.status === "planning" || job.status === "active"
     a(href="/budgets/new" class="btn")
       | Nuevo presupuesto
+      
 
-  a(href="javascript:history.back()" class="btn") Volver

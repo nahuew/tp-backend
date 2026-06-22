@@ -3,6 +3,7 @@ extends layout
 block content
   .new-container
     .form-card
+
       h2 Nueva obra
 
       form(method="POST" action="/jobs")
@@ -11,26 +12,18 @@ block content
         input(type="text" name="name" required)
 
         label(for="location") Provincia:
-
         select(name="location" required)
-
-            option(value="") Seleccionar provincia
-
-            option(value="Buenos Aires") Buenos Aires
-            option(value="Córdoba") Córdoba
-            option(value="Santa Fe") Santa Fe
-            option(value="Mendoza") Mendoza
+          option(value="") Seleccionar provincia
+          option(value="Buenos Aires") Buenos Aires
+          option(value="Córdoba") Córdoba
+          option(value="Santa Fe") Santa Fe
+          option(value="Mendoza") Mendoza
 
         label(for="director_id") Director:
-
         select(name="director_id" required)
-
           option(value="") Seleccionar director
-
           each director in directors
-
-            option(value=director._id)
-              | #{director.name}
+            option(value=director._id)= director.name
 
         label(for="status") Estado:
         select(name="status" required)
@@ -50,3 +43,13 @@ block content
         br
 
         a(href="javascript:history.back()" class="btn") Volver
+
+  script(src="/js/signup.js")
+
+  if flash
+    script.
+      Swal.fire({
+        icon: "#{flash.type}",
+        title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
+        text: "#{flash.message}"
+      });

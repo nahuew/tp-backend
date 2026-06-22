@@ -7,13 +7,17 @@ const statusMap = {
     rejected: "Rechazado"
 };
 
-const handleError = (res, error) => {
+const handleError = (req, res, error) => {
 
     console.error(error);
     console.error("ERROR:", error.name, error.message);
 
-    res.redirect("/budgets/view");
+    req.session.flash = {
+        type: "error",
+        message: "Ocurrió un error inesperado"
+    };
 
+    res.redirect("/budgets/view");
 };
 
 
@@ -22,28 +26,36 @@ const createBudget = async (req, res) => {
 
     try {
 
-        const { 
+        const {
             idCustomer,
-            nameCustomer, 
+            nameCustomer,
             amountmo,
-            amountmat,  
-            status, 
+            amountmat,
+            status,
             description,
-            job_id 
+            job_id
         } = req.body;
 
         const job = await Job.findById(job_id);
 
         if (!job) {
 
-            return res.status(404).send("Obra no encontrada");
+            req.session.flash = {
+                type: "error",
+                message: "Obra no encontrada"
+            };
+
+            return res.redirect("/budgets/view");
         }
 
         if (["completed", "cancelled"].includes(job.status)) {
 
-            return res.status(400).send(
-                "No se pueden agregar presupuestos a una obra finalizada o cancelada"
-            );
+            req.session.flash = {
+                type: "error",
+                message: "No se pueden agregar presupuestos a una obra finalizada o cancelada"
+            };
+
+            return res.redirect("/budgets/view");
         }
 
         await Budget.create({
@@ -56,11 +68,16 @@ const createBudget = async (req, res) => {
             job_id
         });
 
+        req.session.flash = {
+            type: "success",
+            message: "Presupuesto creado correctamente"
+        };
+
         res.redirect("/budgets/view");
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
@@ -74,15 +91,15 @@ const getBudgetsView = async (req, res) => {
             .populate("job_id")
             .sort({ createdAt: -1 });
 
-        res.render("budget", { 
-            budgets, 
-            jobId: null, 
-            statusMap 
+        res.render("budget", {
+            budgets,
+            jobId: null,
+            statusMap
         });
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
@@ -92,19 +109,19 @@ const getBudgetsByJob = async (req, res) => {
 
     try {
 
-        const budgets = await Budget.find({ 
-            job_id: req.params.jobId 
+        const budgets = await Budget.find({
+            job_id: req.params.jobId
         }).populate("job_id");
 
-        res.render("budget", { 
-            budgets, 
-            jobId: req.params.jobId, 
-            statusMap 
+        res.render("budget", {
+            budgets,
+            jobId: req.params.jobId,
+            statusMap
         });
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
@@ -124,7 +141,7 @@ const newBudgetForm = async (req, res) => {
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
     }
 };
 
@@ -137,7 +154,13 @@ const getEditBudgetForm = async (req, res) => {
         const budget = await Budget.findById(req.params.id);
 
         if (!budget) {
-            return res.redirect("/budgets/view");  
+
+            req.session.flash = {
+                type: "error",
+                message: "Presupuesto no encontrado"
+            };
+
+            return res.redirect("/budgets/view");
         }
 
         const jobs = await Job.find({
@@ -151,7 +174,7 @@ const getEditBudgetForm = async (req, res) => {
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
@@ -161,43 +184,51 @@ const updateBudget = async (req, res) => {
 
     try {
 
-        const { 
-            idCustomer, 
-            nameCustomer, 
-            amountmo, 
-            amountmat,  
-            status, 
-            description 
+        const {
+            idCustomer,
+            nameCustomer,
+            amountmo,
+            amountmat,
+            status,
+            description
         } = req.body;
 
         const budget = await Budget.findByIdAndUpdate(
 
             req.params.id,
-            { 
-                idCustomer, 
-                nameCustomer, 
-                amountmo, 
-                amountmat, 
-                status, 
-                description 
+            {
+                idCustomer,
+                nameCustomer,
+                amountmo,
+                amountmat,
+                status,
+                description
             },
-            { 
-                new: true, 
-                runValidators: true 
+            {
+                new: true,
+                runValidators: true
             }
         );
 
         if (!budget) {
 
-            return res.redirect("/budgets/view");  
+            req.session.flash = {
+                type: "error",
+                message: "Presupuesto no encontrado"
+            };
 
+            return res.redirect("/budgets/view");
         }
 
+        req.session.flash = {
+            type: "success",
+            message: "Presupuesto actualizado correctamente"
+        };
         res.redirect("/budgets/view");
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
@@ -212,6 +243,11 @@ const getBudgetById = async (req, res) => {
 
         if (!budget) {
 
+            req.session.flash = {
+                type: "error",
+                message: "Presupuesto no encontrado"
+            };
+
             return res.redirect("/budgets/view");
         }
 
@@ -222,11 +258,39 @@ const getBudgetById = async (req, res) => {
 
     } catch (error) {
 
-        handleError(res, error);
+        handleError(req, res, error);
 
     }
 };
 
+// DELETE
+const deleteBudget = async (req, res) => {
+
+    try {
+
+        const budget = await Budget.findByIdAndDelete(req.params.id);
+
+        if (!budget) {
+
+            req.session.flash = {
+                type: "error",
+                message: "Presupuesto no encontrado"
+            };
+
+            return res.redirect("/budgets/view");
+        }
+
+        req.session.flash = {
+            type: "success",
+            message: "Presupuesto eliminado correctamente"
+        };
+        res.redirect("/budgets/view");
+
+    } catch (error) {
+
+        handleError(req, res, error);
+    }
+};
 
 export {
     getBudgetsByJob,
@@ -236,4 +300,5 @@ export {
     getEditBudgetForm,
     updateBudget,
     getBudgetById,
+    deleteBudget
 };

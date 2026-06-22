@@ -1,6 +1,9 @@
 import express from "express";
 const router = express.Router();
 
+import isAuth from "../middlewares/isAuth.js";
+import { authorize } from "../middlewares/authorize.js";
+
 import {
     createBudget,
     getBudgetsView,
@@ -8,33 +11,34 @@ import {
     newBudgetForm,
     getEditBudgetForm,
     updateBudget,
-    getBudgetById
-
+    getBudgetById,
+    deleteBudget
 } from "../controllers/budgetController.js";
 
+router.use(isAuth);
 
 // CREAR PRESUPUESTO
 router.get("/new", newBudgetForm);
-router.post("/", createBudget);
+router.post("/", authorize("budgets", "create"), createBudget);
 
 
 // VISTA GENERAL
 router.get("/view", getBudgetsView);
 
-//EDITAR PRESUPUESTO
-router.get("/:id/edit", getEditBudgetForm);  // 
-router.post("/:id/edit", updateBudget);       // 
+
+// EDITAR PRESUPUESTO
+router.get("/:id/edit", getEditBudgetForm);
+router.post("/:id/edit", authorize("budgets", "edit"), updateBudget);
 
 
-// VER PRESUPUESTOS DE UNA OBRA (FILTRADO)
+// VER PRESUPUESTOS DE UNA OBRA
 router.get("/job/:jobId", getBudgetsByJob);
 
 
-// ASIGNAR PRESUPUESTO A OBRA (DESPUÉS- funcionalidad extra, no es parte del flujo principal y falta desarrollar)
-//router.put("/:budgetId/assign/:jobId", assignBudgetToJob);
+// VER DETALLE DE UN PRESUPUESTO
+router.get("/:id", getBudgetById);
 
-// VER DETALLE DE UN PRESUPUESTO PARA EDITARLO  
-router.get("/:id", getBudgetById);  
-
+// ELIMINAR PRESUPUESTO
+router.delete("/:id", authorize("budgets", "delete"), deleteBudget);
 
 export default router;

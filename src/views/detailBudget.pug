@@ -28,7 +28,18 @@ block content
         |  #{budget.description}
 
       br
-      a(href="javascript:history.back()" class="btn") Volver
-      |  
-      a(href="/budgets/" + budget._id + "/edit" class="btn") Editar presupuesto
-      
+      .actions
+
+        a.btn(href="javascript:history.back()")
+          | Volver
+
+        a.btn(href=`/budgets/${budget._id}/edit`)
+          | Editar
+
+        if user && user.role === "admin"
+          form.confirm-delete(
+            method="POST"
+            action=`/budgets/${budget._id}?_method=DELETE`
+          )
+            button.btn.btn-danger(type="submit")
+              | Eliminar

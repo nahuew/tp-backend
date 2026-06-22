@@ -4,6 +4,9 @@ import dotenv from "dotenv";
 import Job from "../models/Job.js";
 import Budget from "../models/Budget.js";
 import Director from "../models/Director.js";
+import User from "../models/User.js";
+
+import { hashPassword } from "../utils/password.js";
 
 dotenv.config();
 
@@ -13,14 +16,42 @@ console.log("Conectado a MongoDB");
 
 try {
 
-    // BORRAR DATOS ANTERIORES
+    // -------------------------
+    // LIMPIEZA GENERAL
+    // -------------------------
     await Job.deleteMany({});
     await Budget.deleteMany({});
     await Director.deleteMany({});
+    await User.deleteMany({});
 
     console.log("Datos anteriores eliminados");
 
-    // CREAR DIRECTORES
+    // -------------------------
+    // USUARIOS (ADMIN / USER)
+    // -------------------------
+    const adminPassword = await hashPassword("admin123");
+    const userPassword = await hashPassword("user123");
+
+    await User.insertMany([
+        {
+            name: "Administrador",
+            email: "admin@test.com",
+            passwordHash: adminPassword,
+            role: "admin"
+        },
+        {
+            name: "Usuario Demo",
+            email: "user@test.com",
+            passwordHash: userPassword,
+            role: "user"
+        }
+    ]);
+
+    console.log("Usuarios admin y user creados");
+
+    // -------------------------
+    // DIRECTORES
+    // -------------------------
     const directors = await Director.insertMany([
         {
             name: "Juan Pérez",
@@ -38,7 +69,9 @@ try {
 
     console.log("Directores creados");
 
-    // CREAR OBRAS
+    // -------------------------
+    // JOBS
+    // -------------------------
     const jobs = await Job.insertMany([
         {
             name: "Construcción edificio",
@@ -68,7 +101,9 @@ try {
 
     console.log("Obras creadas");
 
-    // CREAR PRESUPUESTOS
+    // -------------------------
+    // BUDGETS
+    // -------------------------
     await Budget.insertMany([
         {
             idCustomer: 30111222,

@@ -1,6 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import session from "express-session";
+import flash from "connect-flash";
+import methodOverride from "method-override";
+import passport from "./config/passport.js";
+
+import { flashMiddleware } from "./middlewares/flash.js";
 
 import { fileURLToPath } from "url";
 
@@ -18,30 +24,68 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- Middlewares ---
+// --------------------
+// SESSION CONFIG
+// --------------------
+app.use(session({
+    secret: process.env.SESSION_SECRET || "mi_secreto_dev",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        sameSite: "lax", 
+        maxAge: 1000 * 60 * 60 // 1 hora
+    }
+}));
+
+// --------------------
+// BODY PARSERS
+// --------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// --- Pug ---
+app.use(methodOverride("_method"));
+
+// --------------------
+// PASSPORT CONFIG
+// --------------------
+app.use(passport.initialize());
+app.use(passport.session());
+app.use((req, res, next) => {
+    res.locals.user = req.user || null;
+    next();
+});
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash;
+  next();
+});
+
+// --------------------
+// PUG
+// --------------------
 app.set("views", path.join(__dirname, "./views"));
 app.set("view engine", "pug");
 
-// --- Static files ---
+// --------------------
+// STATIC FILES
+// --------------------
 app.use(express.static(path.join(__dirname, "public")));
 
-// --- Ruta principal ---
+// --------------------
+// ROUTES
+// --------------------
 app.get("/", (req, res) => {
     res.redirect("/login");
 });
 
-// --- RUTAS (CORREGIDO) ---
-// ❌ antes: app.use("/login", loginRoutes);
-
-app.use("/", authRouter);       // 👈 login + signUp viven acá
+app.use("/", authRouter);
 app.use("/jobs", jobRoutes);
 app.use("/budgets", budgetRoutes);
 
-// --- Server ---
+// --------------------
+// SERVER START
+// --------------------
 const iniciarServidor = async () => {
     try {
         await conectarDB();

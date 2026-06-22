@@ -151,14 +151,14 @@ nav {
 }
 
 nav a {
-    text-decoration: none; /* Esto quita la línea de abajo */
-    color: #e5f2ff;        /* Elegí el color que quieras (puedes usar nombres como 'red' o hex) */
-    font-weight: bold;     /* Opcional: para que resalten un poco más */
-    margin: 0 10px;        /* Opcional: para darles espacio lateral */
+    text-decoration: none; 
+    color: #e5f2ff;        
+    font-weight: bold;     
+    margin: 0 10px;      
 }
 
 nav a:hover {
-    color: #ffe100;        /* Un color distinto para que el usuario sepa que es clickeable */
+    color: #ffe100;        
 }
 
 /*index*/
@@ -222,6 +222,17 @@ td a {
 
 td a:hover {
     color: #003c8f;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.actions form {
+  margin: 0;
 }
 
 /* new budget*/
@@ -310,19 +321,29 @@ button:hover {
 
 /*detail*/
 .btn {
-  display: inline-block;
-  padding: 10px 15px;
   background-color: #007BFF;
   color: white;
-  text-decoration: none;
-  border-radius: 5px;
   margin: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
 }
 
 .btn:hover {
   background-color: #0056b3;
+  color: white;
 }
 
+.btn.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn.btn-danger:hover {
+  background-color: #ac0717;
+}
 
 /* footer */
 
