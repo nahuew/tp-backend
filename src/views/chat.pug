@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .chat-container
+    .chat-card
+      h2 Chat interno
+      p#onlineUsers Usuarios conectados: 0
+      br
+      ul#messages.chat-messages
+
+      form#chatForm.chat-form
+        input#messageInput(type="text" placeholder="Escribí un mensaje..." autocomplete="off")
+        button(type="submit") Enviar
+
+  script.
+    window.currentUser = "#{user ? user.name : 'Usuario'}";
+  script(src="/socket.io/socket.io.js")
+  script(src="/js/chat.js")

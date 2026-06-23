@@ -2,14 +2,13 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import session from "express-session";
-import flash from "connect-flash";
 import methodOverride from "method-override";
 import passport from "./config/passport.js";
+import http from "http";
 
+import { Server } from "socket.io";
 import { flashMiddleware } from "./middlewares/flash.js";
-
 import { fileURLToPath } from "url";
-
 import { conectarDB } from "./config/db.js";
 
 import authRouter from "./routes/authRoutes.js";
@@ -20,6 +19,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const server = http.createServer(app);
+
+const io = new Server(server);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,10 +58,34 @@ app.use((req, res, next) => {
     res.locals.user = req.user || null;
     next();
 });
-app.use((req, res, next) => {
-  res.locals.flash = req.session.flash;
-  delete req.session.flash;
-  next();
+app.use(flashMiddleware);
+
+// --------------------
+// CHAT CONFIG
+// --------------------
+io.on("connection", (socket) => {
+    io.emit("users-online", io.engine.clientsCount);
+    console.log("Usuario conectado:", socket.id);
+
+    socket.on("chat:message", (data) => {
+        io.emit("chat:message", {
+            text: data.text,
+            user: data.user || "Usuario",
+            time: new Date().toLocaleTimeString("es-AR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            }),
+            socketId: socket.id
+        });
+    });
+
+    socket.on("disconnect", () => {
+        io.emit("users-online", io.engine.clientsCount);
+        console.log("Usuario desconectado:", socket.id);
+    });
+});
+app.get("/chat", (req, res) => {
+    res.render("chat");
 });
 
 // --------------------
@@ -90,7 +117,7 @@ const iniciarServidor = async () => {
     try {
         await conectarDB();
 
-        app.listen(PORT, () => {
+        server.listen(PORT, () => {
             console.log(`Servidor corriendo en http://localhost:${PORT}`);
         });
 
