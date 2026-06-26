@@ -16,14 +16,11 @@ html(lang="es")
         title Login
 
     body.login
-
         section.login-card
-
             h1.tittle-login Bienvenido
             h2.subtitle-login Inicia sesión
 
             form(action="/login", method="POST")
-
                 div.user
                     label(for="email") Email
                     input(
@@ -46,8 +43,6 @@ html(lang="es")
 
                 button(type="submit") Ingresar
 
-            br
-
             p
                 | ¿No tienes cuenta? 
                 a(href="/signUp") Regístrate
@@ -55,8 +50,7 @@ html(lang="es")
         if flash
             script.
                 Swal.fire({
-                icon: "#{flash.type}",
-                title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
-                text: "#{flash.message}"
+                    icon: "#{flash.type}",
+                    title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
+                    text: "#{flash.message}"
                 });
-

@@ -3,48 +3,43 @@ extends layout
 block content
 	.new-container
 		.form-card
-		h2 Editar obra
+			h2 Editar obra
 
-		form#editJobForm(method="POST" action="/jobs/" + job._id + "/edit")
+			form#editJobForm(method="POST" action="/jobs/" + job._id + "/edit")
+				label(for="name") Nombre:
+				input(type="text" name="name" required value=job.name)
 
-			label(for="name") Nombre:
-			input(type="text" name="name" required value=job.name)
+				label(for="location") Provincia:
+				select(name="location" required)
+					option(value="") Seleccionar provincia
+					option(value="Buenos Aires" selected=job.location === "Buenos Aires") Buenos Aires
+					option(value="Córdoba" selected=job.location === "Córdoba") Córdoba
+					option(value="Santa Fe" selected=job.location === "Santa Fe") Santa Fe
+					option(value="Mendoza" selected=job.location === "Mendoza") Mendoza
 
-			label(for="location") Provincia:
-			select(name="location" required)
+				label(for="director_id") Director:
+				select(name="director_id" required)
+					option(value="") Seleccionar director
+					each director in directors
+						option(
+							value=director._id
+							selected=director._id.toString() === job.director_id._id.toString()
+						)= director.name
 
-				option(value="") Seleccionar provincia
+				label(for="status") Estado:
+				select(name="status" required)
+					option(value="planning" selected=job.status === "planning") Planificada
+					option(value="active" selected=job.status === "active") Activa
+					option(value="completed" selected=job.status === "completed") Finalizada
+					option(value="cancelled" selected=job.status === "cancelled") Cancelada
 
-				option(value="Buenos Aires" selected=job.location === "Buenos Aires") Buenos Aires
-				option(value="Córdoba" selected=job.location === "Córdoba") Córdoba
-				option(value="Santa Fe" selected=job.location === "Santa Fe") Santa Fe
-				option(value="Mendoza" selected=job.location === "Mendoza") Mendoza
+				label(for="startDate") Fecha de inicio:
+				input(type="date" name="startDate" required value=job.startDate.toISOString().substring(0,10))
 
-			label(for="director_id") Director:
-			select(name="director_id" required)
+				label(for="estimateEndDate") Fecha de fin estimada:
+				input(type="date" name="estimateEndDate" required value=job.estimateEndDate.toISOString().substring(0,10))
 
-				option(value="") Seleccionar director
-				each director in directors
-					option(
-						value=director._id
-						selected=director._id.toString() === job.director_id._id.toString()
-					)= director.name
+				button(type="submit") Guardar cambios
 
-			label(for="status") Estado:
-			select(name="status" required)
-
-				option(value="planning" selected=job.status === "planning") Planificada
-				option(value="active" selected=job.status === "active") Activa
-				option(value="completed" selected=job.status === "completed") Finalizada
-				option(value="cancelled" selected=job.status === "cancelled") Cancelada
-
-			label(for="startDate") Fecha de inicio:
-			input(type="date" name="startDate" required value=job.startDate.toISOString().substring(0,10))
-
-			label(for="estimateEndDate") Fecha de fin estimada:
-			input(type="date" name="estimateEndDate" required value=job.estimateEndDate.toISOString().substring(0,10))
-
-			button(type="submit") Guardar cambios
-
-		br
-		a(href="javascript:history.back()" class="btn") Volver
+			.page-actions
+				a.btn.btn-secondary(href="javascript:history.back()") Volver

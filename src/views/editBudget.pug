@@ -3,32 +3,31 @@ extends layout
 block content
 	.new-container
 		.form-card
-		h2 Editar Presupuesto
-		
-		form#editBudgetForm(method="POST" action="/budgets/" + budget._id + "/edit")
+			h2 Editar presupuesto
 
-			label(for="idCustomer") DNI/CUIT de Cliente:
-			input(type="number" name="idCustomer" required value=budget.idCustomer)
+			form#editBudgetForm(method="POST" action="/budgets/" + budget._id + "/edit")
+				label(for="idCustomer") DNI/CUIT de Cliente:
+				input(type="number" name="idCustomer" required value=budget.idCustomer)
 
-			label(for="nameCustomer") Nombre de Cliente:
-			input(type="text" name="nameCustomer" required value=budget.nameCustomer)
+				label(for="nameCustomer") Nombre de Cliente:
+				input(type="text" name="nameCustomer" required value=budget.nameCustomer)
 
-			label(for="amountmo") Monto Mano de Obra:
-			input(type="number" name="amountmo" required value=budget.amountmo)
+				label(for="amountmo") Monto Mano de Obra:
+				input(type="number" name="amountmo" required value=budget.amountmo)
 
-			label(for="amountmat") Monto Materiales:
-			input(type="number" name="amountmat" required value=budget.amountmat)
+				label(for="amountmat") Monto Materiales:
+				input(type="number" name="amountmat" required value=budget.amountmat)
 
-			label(for="status") Estado:
-			select(name="status" required)
-				option(value="waiting" selected=budget.status === 'waiting') Pendiente
-				option(value="approved" selected=budget.status === 'approved') Aprobado
-				option(value="rejected" selected=budget.status === 'rejected') Rechazado
+				label(for="status") Estado:
+				select(name="status" required)
+					option(value="waiting" selected=budget.status === 'waiting') Pendiente
+					option(value="approved" selected=budget.status === 'approved') Aprobado
+					option(value="rejected" selected=budget.status === 'rejected') Rechazado
 
-			label(for="description") Descripción:
-			input(type="text" name="description" value=budget.description)
+				label(for="description") Descripción:
+				input(type="text" name="description" value=budget.description)
 
-			button(type="submit") Guardar cambios
+				button(type="submit") Guardar cambios
 
-		br
-		a(href="javascript:history.back()" class="btn") Volver
+			.page-actions
+				a.btn.btn-secondary(href="javascript:history.back()") Volver

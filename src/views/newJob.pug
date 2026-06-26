@@ -1,55 +1,42 @@
 extends layout
 
 block content
-  .new-container
-    .form-card
+	.new-container
+		.form-card
+			h2 Nueva obra
 
-      h2 Nueva obra
+			form(method="POST" action="/jobs")
+				label(for="name") Nombre:
+				input(type="text" name="name" required)
 
-      form(method="POST" action="/jobs")
+				label(for="location") Provincia:
+				select(name="location" required)
+					option(value="") Seleccionar provincia
+					option(value="Buenos Aires") Buenos Aires
+					option(value="Córdoba") Córdoba
+					option(value="Santa Fe") Santa Fe
+					option(value="Mendoza") Mendoza
 
-        label(for="name") Nombre:
-        input(type="text" name="name" required)
+				label(for="director_id") Director:
+				select(name="director_id" required)
+					option(value="") Seleccionar director
+					each director in directors
+						option(value=director._id)= director.name
 
-        label(for="location") Provincia:
-        select(name="location" required)
-          option(value="") Seleccionar provincia
-          option(value="Buenos Aires") Buenos Aires
-          option(value="Córdoba") Córdoba
-          option(value="Santa Fe") Santa Fe
-          option(value="Mendoza") Mendoza
+				label(for="status") Estado:
+				select(name="status" required)
+					option(value="planning") Planificada
+					option(value="active") Activa
+					option(value="completed") Finalizada
+					option(value="cancelled") Cancelada
 
-        label(for="director_id") Director:
-        select(name="director_id" required)
-          option(value="") Seleccionar director
-          each director in directors
-            option(value=director._id)= director.name
+				label(for="startDate") Fecha de inicio:
+				input(type="date" name="startDate" required)
 
-        label(for="status") Estado:
-        select(name="status" required)
-          option(value="planning") Planificada
-          option(value="active") Activa
-          option(value="completed") Finalizada
-          option(value="cancelled") Cancelada
+				label(for="estimateEndDate") Fecha de fin estimada:
+				input(type="date" name="estimateEndDate" required)
 
-        label(for="startDate") Fecha de inicio:
-        input(type="date" name="startDate" required)
+				button(type="submit") Guardar
 
-        label(for="estimateEndDate") Fecha de fin estimada:
-        input(type="date" name="estimateEndDate" required)
-
-        button(type="submit") Guardar
-
-        br
-
-        a(href="javascript:history.back()" class="btn") Volver
-
-  script(src="/js/signup.js")
-
-  if flash
-    script.
-      Swal.fire({
-        icon: "#{flash.type}",
-        title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
-        text: "#{flash.message}"
-      });
+			.page-actions
+				a.btn.btn-secondary(href="javascript:history.back()") Volver

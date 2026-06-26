@@ -1,14 +1,16 @@
 extends layout
 
 block content
-	.index-container
+	.page
+		.page-header
+			h2 Lista de obras
+			.page-actions
+				a.btn(href="/jobs/new") Nueva obra
 
-		br
-		h2 Lista de obras
 		.table-wrapper
 			table
 				thead
-					tr 
+					tr
 						th Nombre
 						th Ubicación
 						th Director
@@ -22,8 +24,9 @@ block content
 							td= job.name
 							td= job.location
 							td= job.director_id.name
-							td= statusMap[job.status]
+							td
+								span(class=`badge badge-${job.status}`)= statusMap[job.status]
 							td= new Date(job.startDate).toLocaleDateString('es-AR', { timeZone: 'UTC' })
 							td= new Date(job.estimateEndDate).toLocaleDateString('es-AR', { timeZone: 'UTC' })
 							td
-								a(href="/jobs/view/" + job._id)  Ver
+								a.btn.btn-secondary(href="/jobs/view/" + job._id) Ver
