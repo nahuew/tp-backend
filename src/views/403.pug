@@ -1,0 +1,7 @@
+extends layout
+
+block content
+	.error-page.card
+		h2 Acceso denegado
+		p= error || "No tienes permisos para realizar esta acción"
+		a.btn.btn-secondary(href="javascript:history.back()") Volver

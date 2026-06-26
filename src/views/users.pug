@@ -1,0 +1,42 @@
+extends layout
+
+block content
+	.page
+		.page-header
+			h2 Administración de usuarios
+
+		.table-wrapper
+			table
+				thead
+					tr
+						th Nombre
+						th Email
+						th Rol
+						th Fecha de creación
+						th Acciones
+				tbody
+					each u in users
+						tr
+							td= u.name
+							td= u.email
+							td
+								span.badge(class=u.role === "admin" ? "badge-approved" : "badge-completed")= u.role
+							td= u.createdAt.toLocaleDateString("es-AR")
+							td
+								.user-actions
+									form.user-role-form(method="POST", action=`/users/${u._id}/role`)
+										select.user-role-select(name="role")
+											option(value="user", selected=u.role === "user") user
+											option(value="admin", selected=u.role === "admin") admin
+
+										button.btn(type="submit") Cambiar rol
+
+									if user && user._id.toString() !== u._id.toString()
+										form.user-delete-form.confirm-delete(
+											method="POST"
+											action=`/users/${u._id}/delete`
+										)
+											button.btn.btn-danger(type="submit") Eliminar
+
+		.page-actions
+			a.btn.btn-secondary(href="javascript:history.back()") Volver
