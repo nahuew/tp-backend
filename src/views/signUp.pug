@@ -12,13 +12,11 @@ html(lang="es")
         link(href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap", rel="stylesheet")
 
         script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
-        
+
         title Registro
 
     body.login
-
         section.login-card
-
             h1.tittle-login Bienvenido
             h2.subtitle-login Crea tu cuenta
 
@@ -26,7 +24,6 @@ html(lang="es")
                 p.error-message= error
 
             form(action="/signUp", method="POST")
-
                 div.user
                     label(for="name") Nombre
                     input(
@@ -62,25 +59,23 @@ html(lang="es")
                         li#upper.upper Una mayúscula
                         li#lower.lower Una minúscula
                         li#special.special Un carácter especial
-                    
+
                     div.strength-container
                         div#strength-bar.strength-bar
                     p#strength-text.strength-text
 
                 button#submit-btn(type="submit" disabled) Registrarse
 
-            br
-
             p
                 | ¿Ya tienes cuenta? 
                 a(href="/login") Inicia sesión
 
         script(src="/js/signup.js")
-        
+
         if flash
             script.
                 Swal.fire({
-                icon: "#{flash.type}",
-                title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
-                text: "#{flash.message}"
+                    icon: "#{flash.type}",
+                    title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
+                    text: "#{flash.message}"
                 });

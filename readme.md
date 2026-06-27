@@ -1,214 +1,120 @@
-# Proyecto Backend - Cimientos Sólidos S.A.
+# Cimientos Sólidos S.A. - Backend
 
-Sistema backend desarrollado con:
+Aplicación web backend para administrar obras, presupuestos y usuarios de una empresa constructora.
 
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- Pug
+El proyecto está desarrollado con Node.js, Express, MongoDB, Mongoose y Pug. Incluye autenticación con Passport, sesiones, roles de usuario, vistas server-side y chat interno con Socket.IO.
 
----
-
-# Tecnologías utilizadas
+## Tecnologías
 
 - Node.js
 - Express
 - ES Modules
 - MongoDB
-- MongoDB Compass
 - Mongoose
 - Pug
+- Passport Local
+- bcrypt
+- express-session
+- method-override
+- Socket.IO
 - Nodemon
+- Node Test Runner
 
----
-
-# Requisitos previos
-
-Antes de ejecutar el proyecto es necesario tener instalado:
+## Requisitos
 
 - Node.js
 - MongoDB Community Server
-- MongoDB Compass
-- Git (opcional)
+- Git
+- MongoDB Compass opcional, solo para visualizar la base de datos
 
----
+## Instalación
 
-# 1. Clonar el repositorio
+Clonar el repositorio:
 
 ```bash
 git clone URL_DEL_REPOSITORIO
+cd tp-backend
 ```
 
-Entrar a la carpeta:
-
-```bash
-cd nombre-del-proyecto
-```
-
----
-
-# 2. Instalar dependencias
-
-Ejecutar:
+Instalar dependencias:
 
 ```bash
 npm install
 ```
 
-Esto creará automáticamente la carpeta:
+## Variables de entorno
 
-```bash
-node_modules
+Crear un archivo `.env` en la raíz del proyecto. Se puede tomar como base `.env.example`.
+
+Ejemplo para entorno local:
+
+```env
+PORT=3000
+MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
+SESSION_SECRET=un_secreto_para_desarrollo
 ```
 
----
+Variables disponibles:
 
-# 3. Verificar instalación de Express
+| Variable | Descripción |
+|---|---|
+| `PORT` | Puerto donde corre la aplicación. Por defecto usa `3000`. |
+| `MONGO_URI` | String de conexión a MongoDB. |
+| `SESSION_SECRET` | Clave usada para firmar la sesión de Express. |
 
-Opcionalmente pueden verificar Express con:
+## Base de datos
 
-```bash
-npx express --version
-```
-
-o:
-
-```bash
-npm list express
-```
-
----
-
-# 4. Configurar MongoDB
-
-## Instalar MongoDB Community Server
-
-Descargar desde:
-
-- https://www.mongodb.com/try/download/community
-
-Durante la instalación dejar seleccionada la opción:
-
-```text
-Install MongoDB as a Service
-```
-
----
-
-# 5. Instalar MongoDB Compass
-
-Descargar desde:
-
-- https://www.mongodb.com/products/tools/compass
-
-Compass permite visualizar gráficamente la base de datos.
-
----
-
-# 6. Conectarse desde MongoDB Compass
-
-Abrir MongoDB Compass.
-
-En el campo de conexión colocar:
+Para usar MongoDB localmente, iniciar MongoDB Community Server y conectarse a:
 
 ```text
 mongodb://127.0.0.1:27017
 ```
 
-Luego presionar:
+Con MongoDB Compass se puede inspeccionar la base:
 
 ```text
-Connect
+Cimientos_Solidos_SA
 ```
 
----
+## Datos de prueba
 
-# 7. Configurar variables de entorno
+El proyecto incluye un seed que limpia la base y crea usuarios, directores, obras y presupuestos de ejemplo.
 
-Crear un archivo llamado:
-
-```text
-.env
-```
-
-En la raíz del proyecto.
-
-Agregar:
-
-```env
-PORT=3000
-MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
-```
-
----
-
-# 8. Poblar la base de datos con datos de prueba
-
-El proyecto incluye un script para cargar datos mockeados automáticamente en MongoDB.
-
----
-
-## Ejecutar el seed
-
-Una vez configurada la conexión a MongoDB y creada la base de datos, ejecutar:
+Ejecutar:
 
 ```bash
 npm run seed
 ```
 
----
-
-## ¿Qué hace este comando?
-
-El script:
-
-- Elimina los datos anteriores de la base
-- Crea obras de ejemplo
-- Crea directores de ejemplo
-- Crea obras asociadas a directores
-- Crea presupuestos asociados a obras
-
----
-
-## Archivo del seed
-
-El script se encuentra en:
+El archivo del seed está en:
 
 ```text
 src/seeds/seed.js
 ```
 
----
+Usuarios creados por el seed:
 
-# 9. Iniciar el proyecto
+| Rol | Email | Password |
+|---|---|---|
+| Admin | `admin@test.com` | `admin123` |
+| User | `user@test.com` | `user123` |
 
-Ejecutar:
+## Scripts
 
-```bash
-npm start
-```
+| Comando | Descripción |
+|---|---|
+| `npm start` | Inicia la app con Nodemon. |
+| `npm run dev` | Inicia la app en modo desarrollo con Nodemon. |
+| `npm run seed` | Carga datos de prueba en MongoDB. |
+| `npm test` | Ejecuta pruebas con el test runner nativo de Node. |
 
-o en modo desarrollo:
+## Ejecutar la aplicación
+
+Con MongoDB iniciado y el archivo `.env` configurado:
 
 ```bash
 npm run dev
 ```
-
----
-
-# 10. Verificar conexión MongoDB
-
-Si todo funciona correctamente debería aparecer:
-
-```bash
-✅ MongoDB conectado
-Servidor corriendo en http://localhost:3000
-```
-
----
-
-# 11. Acceder a la aplicación
 
 Abrir en el navegador:
 
@@ -216,118 +122,142 @@ Abrir en el navegador:
 http://localhost:3000
 ```
 
----
+La raíz `/` redirige a `/login`.
 
-# Login
+## Funcionalidades
+
+- Registro e inicio de sesión.
+- Autenticación con Passport Local.
+- Passwords hasheadas con bcrypt.
+- Sesiones con `express-session`.
+- Mensajes flash para acciones del sistema.
+- Roles `admin` y `user`.
+- Administración de usuarios para admins.
+- CRUD de obras.
+- CRUD de presupuestos.
+- Relación entre obras, presupuestos y directores.
+- Restricción para no agregar presupuestos a obras finalizadas o canceladas.
+- Eliminación protegida por permisos.
+- Confirmación visual antes de eliminar.
+- Chat interno en tiempo real con Socket.IO.
+- Vistas Pug con estilos centralizados.
+- Tests basicos de vistas, assets y validacion de password.
+
+## Permisos
+
+Los permisos principales están definidos en:
 
 ```text
-Usuario: admin
-Password: admin123
+src/config/permissionMap.js
 ```
 
-Actualmente el login es una implementación básica sin autenticación real.
+Resumen:
 
-Cualquier usuario creado puede acceder al sistema.
+| Módulo | User | Admin |
+|---|---|---|
+| Obras | Ver, crear, editar | Ver, crear, editar, eliminar |
+| Presupuestos | Ver, crear, editar | Ver, crear, editar, eliminar |
+| Usuarios | Sin acceso | Ver, cambiar rol, eliminar |
 
----
+## Rutas principales
 
-# Rutas principales
-
-## Vistas (Pug)
+### Autenticación
 
 | Método | Ruta | Descripción |
 |---|---|---|
 | GET | `/login` | Vista de login |
-| GET | `/jobs/view` | Lista de obras |
-| GET | `/jobs/view/:id` | Detalle de una obra |
-| GET | `/jobs/new` | Formulario nueva obra |
-| GET | `/budgets/new` | Formulario nuevo presupuesto |
-| GET | `/budgets/view` | Lista de presupuestos |
-| GET | `/budgets/job/:jobId` | Presupuestos asociados a una obra |
-| GET | `/budgets/:id` | Detalle de un presupuesto |
-| GET | `/budgets/:id/edit` | Formulario edición de presupuesto |
-| POST | `/budgets` | Crear presupuesto desde formulario |
-| POST | `/budgets/:id/edit` | Actualizar presupuesto desde formulario |
 | POST | `/login` | Iniciar sesión |
+| GET | `/signUp` | Vista de registro |
+| POST | `/signUp` | Crear usuario |
+| GET | `/logout` | Cerrar sesión |
 
----
-
-# API REST (JSON)
+### Obras
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/jobs` | Obtener todas las obras |
-| GET | `/jobs/:id` | Obtener obra por ID |
-| POST | `/jobs` | Crear nueva obra |
-| PUT | `/jobs/:id` | Actualizar obra |
+| GET | `/jobs/view` | Lista de obras |
+| GET | `/jobs/view/:id` | Detalle visual de una obra |
+| GET | `/jobs/new` | Formulario de nueva obra |
+| POST | `/jobs` | Crear obra |
+| GET | `/jobs/:id/edit` | Formulario de edición de obra |
+| POST | `/jobs/:id/edit` | Actualizar obra |
 | DELETE | `/jobs/:id` | Eliminar obra |
+| GET | `/jobs` | Obtener obras en JSON |
+| GET | `/jobs/:id` | Obtener una obra en JSON |
 
----
+### Presupuestos
 
-# Ejemplo POST /jobs
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/budgets/view` | Lista de presupuestos |
+| GET | `/budgets/new` | Formulario de nuevo presupuesto |
+| POST | `/budgets` | Crear presupuesto |
+| GET | `/budgets/job/:jobId` | Presupuestos asociados a una obra |
+| GET | `/budgets/:id` | Detalle de presupuesto |
+| GET | `/budgets/:id/edit` | Formulario de edición de presupuesto |
+| POST | `/budgets/:id/edit` | Actualizar presupuesto |
+| DELETE | `/budgets/:id` | Eliminar presupuesto |
 
-```json
-{
-  "name": "Construcción edificio",
-  "location": "Córdoba",
-  "director_id": "ID_DEL_DIRECTOR",
-  "status": "planning",
-  "startDate": "2025-07-01",
-  "estimateEndDate": "2026-01-01"
-}
-```
+### Usuarios
 
----
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/users` | Administración de usuarios |
+| POST | `/users/:id/role` | Cambiar rol |
+| POST | `/users/:id/delete` | Eliminar usuario |
 
-# Estructura del proyecto
+### Chat
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/chat` | Chat interno |
+
+## Estructura del proyecto
 
 ```text
 src/
-│
-├── config/
-├── controllers/
-├── models/
-├── routes/
-├── seeds/
-├── views/
-├── public/
-└── index.js
+  config/        Configuración de base de datos, Passport y permisos
+  controllers/   Lógica de controladores
+  middlewares/   Autenticación, roles, permisos y flash
+  models/        Modelos de Mongoose
+  public/        CSS, JavaScript del cliente e imágenes
+  routes/        Rutas de Express
+  seeds/         Script para cargar datos de prueba
+  utils/         Utilidades compartidas
+  views/         Vistas Pug
+  index.js       Punto de entrada de la aplicación
+
+test/
+  smoke.test.js  Pruebas básicas del proyecto
 ```
 
----
-
-# Funcionalidades implementadas
-
-- CRUD de obras
-- CRUD de presupuestos
-- Relación entre obras y presupuestos
-- Normalización de directores mediante referencias MongoDB
-- Validación de estados de obras y presupuestos
-- Restricción de presupuestos en obras finalizadas o canceladas
-- Motor de vistas Pug
-- MongoDB con Mongoose
-- Arquitectura MVC
-- Programación asincrónica con async/await
-- Manejo básico de errores
-- Variables de entorno con dotenv
-
----
-
-# Posibles errores comunes
-
-## Error: Cannot find module
+## Tests
 
 Ejecutar:
+
+```bash
+npm test
+```
+
+Actualmente las pruebas verifican:
+
+- Que todas las vistas Pug compilen.
+- Que los assets locales referenciados por las vistas existan.
+- Que la validación de password respete las reglas del proyecto.
+
+## Errores comunes
+
+### Cannot find module
+
+Instalar dependencias:
 
 ```bash
 npm install
 ```
 
----
+### Error de conexión a MongoDB
 
-## Error de conexión MongoDB
-
-Verificar que MongoDB Server esté iniciado.
+Verificar que MongoDB esté iniciado.
 
 En Windows:
 
@@ -335,44 +265,50 @@ En Windows:
 services.msc
 ```
 
-Buscar:
+Buscar `MongoDB Server` y confirmar que esté en estado `Running`.
+
+### Credenciales incorrectas
+
+Si se usa el seed, iniciar sesión con:
 
 ```text
-MongoDB Server
+admin@test.com / admin123
 ```
 
-Debe estar en estado:
+o:
 
 ```text
-Running
+user@test.com / user123
 ```
 
----
+## Notas de desarrollo
+
+- El proyecto usa ES Modules, por eso se utiliza `import/export`.
+- Las eliminaciones desde formularios usan `method-override` con `?_method=DELETE`.
+- Las rutas de obras y presupuestos requieren usuario autenticado.
+- Las acciones destructivas están restringidas al rol `admin`.
+- El estilo visual esta centralizado en `src/public/css/style.css`.
 
 
-
-## Configuración para ejecutar los Test automáticos
-
+## Configuración para ejecutar los Tests automáticos
 npm install --save-dev jest
-
 npm install --save-dev babel-jest @babel/core @babel/preset-env
-
 npm install --save-dev mongodb-memory-server
 
 Para ejecutar los test:
-
 npx jest tests/auth.test.js
 npx jest tests/job.test.js
 npx jest tests/budget.test.js
 
 
+
 ---
 # Integracion con GEMINI IA
 
-Instrucciones: en la terminal ejecutar:  npm install @google/generative-ai npm install dotenv
-
+- Instrucciones: en la terminal ejecutar: npm install @google/generative-ai
 
 
 # Autor
+=======
 
-Proyecto académico desarrollado para práctica de backend con Node.js y MongoDB.
+Proyecto académico desarrollado para práctica de backend con Node.js, Express y MongoDB.

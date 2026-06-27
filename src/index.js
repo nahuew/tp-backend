@@ -14,6 +14,7 @@ import { conectarDB } from "./config/db.js";
 import authRouter from "./routes/authRoutes.js";
 import jobRoutes from "./routes/jobRoutes.js";
 import budgetRoutes from "./routes/budgetRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -109,6 +110,7 @@ app.get("/", (req, res) => {
 app.use("/", authRouter);
 app.use("/jobs", jobRoutes);
 app.use("/budgets", budgetRoutes);
+app.use("/users", userRoutes);
 
 // --------------------
 // SERVER START

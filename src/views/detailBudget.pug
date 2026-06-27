@@ -1,45 +1,39 @@
 extends layout
 
 block content
-  .new-container
-    .form-card
-      h2 Detalle de Presupuesto
+	.new-container
+		.form-card
+			.page-header
+				h2 Detalle de presupuesto
+				span(class=`badge badge-${budget.status}`)= statusMap[budget.status]
 
-      p
-        strong DNI/CUIT de Cliente:
-        |  #{budget.idCustomer}
-      p
-        strong Nombre de Cliente:
-        |  #{budget.nameCustomer}
-      p
-        strong Monto Mano de Obra:
-        |  #{budget.amountmo}
-      p
-        strong Monto Materiales:
-        |  #{budget.amountmat}
-      p
-        strong Monto Total:
-        |  #{budget.amountot}
-      p
-        strong Estado:
-        |  #{statusMap[budget.status]}
-      p
-        strong Descripción:
-        |  #{budget.description}
+			.detail-list
+				p
+					strong DNI/CUIT de Cliente:
+					|  #{budget.idCustomer}
+				p
+					strong Nombre de Cliente:
+					|  #{budget.nameCustomer}
+				p
+					strong Monto Mano de Obra:
+					|  #{budget.amountmo}
+				p
+					strong Monto Materiales:
+					|  #{budget.amountmat}
+				p
+					strong Monto Total:
+					|  #{budget.amountot}
+				p
+					strong Descripción:
+					|  #{budget.description}
 
-      br
-      .actions
+			.actions
+				a.btn.btn-secondary(href="javascript:history.back()") Volver
+				a.btn(href=`/budgets/${budget._id}/edit`) Editar
 
-        a.btn(href="javascript:history.back()")
-          | Volver
-
-        a.btn(href=`/budgets/${budget._id}/edit`)
-          | Editar
-
-        if user && user.role === "admin"
-          form.confirm-delete(
-            method="POST"
-            action=`/budgets/${budget._id}?_method=DELETE`
-          )
-            button.btn.btn-danger(type="submit")
-              | Eliminar
+				if user && user.role === "admin"
+					form.confirm-delete(
+						method="POST"
+						action=`/budgets/${budget._id}?_method=DELETE`
+					)
+						button.btn.btn-danger(type="submit") Eliminar

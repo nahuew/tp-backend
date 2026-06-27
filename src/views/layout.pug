@@ -7,86 +7,73 @@ html(lang="es")
 		link(rel="preconnect", href="https://fonts.googleapis.com")
 		link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin)
 		link(href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap", rel="stylesheet")
-
 		link(rel="stylesheet", href="/css/style.css")
 
 		script(src="https://cdn.jsdelivr.net/npm/sweetalert2@11")
 
-		title Cimientos Sólidos SA
+		title Cimientos Sólidos S.A.
 
 	body
+		header.app-header
+			.app-header-inner
+				a.brand(href="/jobs/view") Cimientos Sólidos S.A.
 
-		// ---------------- NAVBAR ----------------
-		header
-			nav
+				nav.app-nav
+					a(href="/jobs/view") Obras
 
-				a(href="/jobs/view") Obras
+					if user
+						a(href="/jobs/new") Nueva obra
+						a(href="/budgets/view") Presupuestos
+						a(href="/budgets/new") Nuevo presupuesto
 
-				if user
-					|  |
-					a(href="/jobs/new") Nueva obra
-					|  |
-					a(href="/budgets/view") Presupuestos
-					|  |
-					a(href="/budgets/new") Nuevo presupuesto
-					|  |
-					a(href="/logout") Cerrar sesión
+						if user.role === "admin"
+							a(href="/users") Usuarios
 
-					span(style="margin-left:10px; font-weight:bold;")
-						| Hola, #{user.name}
+						a(href="/logout") Cerrar sesión
+						span.nav-user Hola, #{user.name}
+					else
+						a(href="/login") Iniciar sesión
+						a(href="/signUp") Registrarse
 
-				else
-					|  |
-					a(href="/login") Iniciar sesión
-					|  |
-					a(href="/signUp") Registrarse
+		main.page-shell
+			block content
 
-			h1 Cimientos Sólidos SA
+		if user
+			a.chat-floating(href="/chat" title="Mensajería interna")
+				img(src="/images/chat.svg" alt="Chat")
 
-		hr
+		footer
+			p Proyecto Node.js con MongoDB
 
-	// ---------------- CONTENIDO ----------------
-	block content
-	a.chat-floating(href="/chat" title="Mensajería interna")
-		img(src="/images/chat.svg" alt="Chat")
+		if flash
+			script.
+				document.addEventListener("DOMContentLoaded", function () {
+					Swal.fire({
+						title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
+						text: "#{flash.message}",
+						icon: "#{flash.type}",
+						confirmButtonText: "OK"
+					});
+				});
 
-	hr
-
-	footer
-		p Proyecto Node.js con MongoDB
-
-	// ================= FLASH GLOBAL =================
-	if flash
 		script.
-			document.addEventListener("DOMContentLoaded", function () {
-				Swal.fire({
-					title: "#{flash.type === 'success' ? 'Éxito' : 'Error'}",
-					text: "#{flash.message}",
-					icon: "#{flash.type}",
-					confirmButtonText: "OK"
-				});
-			});
+			document.addEventListener("submit", function (e) {
+				const form = e.target;
 
-	// ================= DELETE CONFIRM GLOBAL =================
-	script.
-		document.addEventListener("submit", function (e) {
-			const form = e.target;
+				if (form.classList.contains("confirm-delete")) {
+					e.preventDefault();
 
-			if (form.classList.contains("confirm-delete")) {
-				e.preventDefault();
-
-				Swal.fire({
-				title: "¿Estás seguro?",
-				text: "Esta acción no se puede deshacer",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonText: "Sí, eliminar",
-				cancelButtonText: "Cancelar"
-				}).then((result) => {
-				if (result.isConfirmed) {
-					form.submit();
+					Swal.fire({
+						title: "¿Estás seguro?",
+						text: "Esta acción no se puede deshacer",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonText: "Sí, eliminar",
+						cancelButtonText: "Cancelar"
+					}).then((result) => {
+						if (result.isConfirmed) {
+							form.submit();
+						}
+					});
 				}
-				});
-			}
-		});
-		
+			});

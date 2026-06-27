@@ -1,69 +1,55 @@
 extends layout
 
 block content
+	.page
+		.page-header
+			h2 Detalle de obra
+			.page-actions
+				a.btn(href=`/jobs/${job._id}/edit`) Editar
 
-  h2 Detalle obra
+				if user && user.role === "admin"
+					form.confirm-delete(
+						method="POST"
+						action=`/jobs/${job._id}?_method=DELETE`
+					)
+						button.btn.btn-danger(type="submit") Eliminar
 
-  p
-    strong Nombre: 
-    | #{job.name}
+		.card
+			.detail-list
+				p
+					strong Nombre:
+					|  #{job.name}
+				p
+					strong Ubicación:
+					|  #{job.location}
+				p
+					strong Director:
+					|  #{job.director_id.name}
+				p
+					strong Estado:
+					|  
+					span(class=`badge badge-${job.status}`)= statusMap[job.status]
 
-  p
-    strong Ubicación: 
-    | #{job.location}
+		.card
+			.page-header
+				h3 Presupuestos asociados
+				if job.status === "planning" || job.status === "active"
+					a.btn(href="/budgets/new") Nuevo presupuesto
 
-  p
-    strong Director: 
-    | #{job.director_id.name}
+			if budgets.length > 0
+				.related-list
+					each budget in budgets
+						.related-item
+							p
+								strong Cliente:
+								|  #{budget.nameCustomer}
+							p
+								strong Estado:
+								|  
+								span(class=`badge badge-${budget.status}`)= budgetStatusMap[budget.status]
+							a.btn.btn-secondary(href=`/budgets/${budget._id}`) Ver detalle
+			else
+				.empty-state No hay presupuestos vinculados.
 
-  br
-
-  .actions
-
-    a.btn(href=`/jobs/${job._id}/edit`)
-      | Editar
-
-    if user && user.role === "admin"
-      form.confirm-delete(
-        method="POST"
-        action=`/jobs/${job._id}?_method=DELETE`
-      )
-        button.btn.btn-danger(type="submit")
-          | Eliminar
-
-  br
-  br
-
-  h3 Presupuestos asociados
-
-  if budgets.length > 0
-
-    ul
-      each budget in budgets
-
-        li
-
-          p Cliente: #{budget.nameCustomer}
-
-          p Estado: #{budgetStatusMap[budget.status]}
-
-          a.btn(href=`/budgets/${budget._id}`)
-            | Ver detalle
-
-          br
-          br
-
-  else
-
-    p No hay presupuestos vinculados
-
-  br
-
-  a(href="javascript:history.back()" class="btn")
-    | Volver
-
-  if job.status === "planning" || job.status === "active"
-    a(href="/budgets/new" class="btn")
-      | Nuevo presupuesto
-      
-
+		.page-actions
+			a.btn.btn-secondary(href="javascript:history.back()") Volver

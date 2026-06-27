@@ -1,33 +1,36 @@
 extends layout
 
 block content
-  h2 Presupuestos #{jobId}
+	.page
+		.page-header
+			h2 Presupuestos
+			.page-actions
+				a.btn(href="/budgets/new") Nuevo presupuesto
+				a.btn.btn-secondary(href="javascript:history.back()") Volver
 
-  if budgets.length === 0
-    p No hay presupuestos
-  else
-    table(border="1")
-      tr  
-        th DNI/CUIT de Cliente
-        th Nombre de cliente
-        th Monto Mano de Obra
-        th Monto Materiales
-        th Monto Total
-        th Estado
-        th
-
-      each b in budgets
-        tr
-          td= b.idCustomer
-          td= b.nameCustomer
-          td= b.amountmo
-          td= b.amountmat
-          td= b.amountot
-          td= statusMap[b.status]
-          td 
-            a(href="/budgets/" + b._id class="btn") Ver detalle
-  br
-
-  a(href="javascript:history.back()" class="btn") Volver
-  |  
-  a(href="/budgets/new" class="btn") Nuevo Presupuesto
+		if budgets.length === 0
+			.empty-state No hay presupuestos para mostrar.
+		else
+			.table-wrapper
+				table
+					thead
+						tr
+							th DNI/CUIT
+							th Cliente
+							th Mano de obra
+							th Materiales
+							th Total
+							th Estado
+							th
+					tbody
+						each b in budgets
+							tr
+								td= b.idCustomer
+								td= b.nameCustomer
+								td= b.amountmo
+								td= b.amountmat
+								td= b.amountot
+								td
+									span(class=`badge badge-${b.status}`)= statusMap[b.status]
+								td
+									a.btn.btn-secondary(href="/budgets/" + b._id) Ver detalle
