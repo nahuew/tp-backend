@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "nodemon src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node src/seeds/seed.js"
@@ -14,18 +14,27 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "install": "^0.13.0",
     "method-override": "^3.0.0",
+    "mongodb": "^7.3.0",
     "mongoose": "^9.6.2",
+    "npm": "^11.17.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pug": "^3.0.4",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "babel-jest": "^30.4.1",
+    "jest": "^30.4.2",
+    "mongodb-memory-server": "^11.2.0",
     "nodemon": "^3.1.14"
   }
 }

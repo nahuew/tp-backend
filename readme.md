@@ -349,6 +349,30 @@ Running
 
 ---
 
+
+
+## Configuración para ejecutar los Test automáticos
+
+npm install --save-dev jest
+
+npm install --save-dev babel-jest @babel/core @babel/preset-env
+
+npm install --save-dev mongodb-memory-server
+
+Para ejecutar los test:
+
+npx jest tests/auth.test.js
+npx jest tests/job.test.js
+npx jest tests/budget.test.js
+
+
+---
+# Integracion con GEMINI IA
+
+Instrucciones: en la terminal ejecutar:  npm install @google/generative-ai npm install dotenv
+
+
+
 # Autor
 
 Proyecto académico desarrollado para práctica de backend con Node.js y MongoDB.
