@@ -5,6 +5,7 @@
         showSignUp,
         userSignUp
     } from "../controllers/authController.js";
+    import { loginLimiter } from "../middlewares/rateLimiter.js";
 
     const router = express.Router();
 
@@ -19,7 +20,7 @@
     // ----------------------
     router.get("/login", showLogin);
 
-    router.post("/login", (req, res, next) => {
+    router.post("/login", loginLimiter, (req, res, next) => {
         passport.authenticate("local", (err, user, info) => {
             
             if (err) {
