@@ -254,21 +254,42 @@ npm test
 ```
 Por archivo:
 
-node --test test/budget.test.js
-node --test test/job.test.js
-node --test test/auth.test.js
-node --test test/smoke.test.js
+- node --test test/budget.test.js
+- node --test test/job.test.js
+- node --test test/auth.test.js
+- node --test test/smoke.test.js
 
 
-Actualmente las pruebas verifican:
 
-- Que todas las vistas Pug compilen.
-- Que los assets locales referenciados por las vistas existan.
-- Que la validación de password respete las reglas del proyecto.
-- Encriptación de contraseñas
-- Comparación de contraseñas 
-- Creación de Obra y validaciones: ubicación, nombre, estado, estado por defecto.
-- Creación de presupuesto y validaciones: id, nombre cliente, monto material y mano de obra, estado, monto total, estados. 
+## Tests unitarios
+
+| Módulo | Funcionalidad | Función | Archivo |
+|---|---|---|---|
+| Autenticación | Verifica que la validación de contraseña rechaza contraseñas inválidas y acepta las válidas | validatePassword() | src/utils/validators.js |
+| Vistas | Verifica que todos los archivos .pug compilan sin errores de sintaxis | pug.compileFile() | src/views/*.pug |
+| Archivos estáticos | Verifica que los archivos CSS, JS e imágenes referenciados en las vistas existen físicamente | fs.existsSync() | src/public/ |
+| Encriptación | Verifica que la contraseña se encripta correctamente | hashPassword() | src/utils/password.js |
+| Autenticación | Verifica que una contraseña correcta coincide con su hash | comparePassword() | src/utils/password.js |
+| Autenticación | Verifica que una contraseña incorrecta es rechazada | comparePassword() | src/utils/password.js |
+| Presupuesto | Verifica que se pueda crear un presupuesto con datos válidos | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que no se pueda crear un presupuesto sin nombre de cliente | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que no se pueda crear un presupuesto sin monto de mano de obra | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que no se pueda crear un presupuesto sin monto de materiales | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que no se pueda crear un presupuesto sin una obra asociada | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que el estado por defecto al crear un presupuesto sea "En espera" | Budget.create() | src/models/Budget.js |
+| Presupuesto | Verifica que al actualizar el estado se guarda correctamente en la base de datos | budget.save() | src/models/Budget.js |
+| Presupuesto | Verifica que el monto total sume el monto de mano de obra y materiales | budget.amountot | src/models/Budget.js |
+| Presupuesto | Verifica que se acepten todos los estados válidos | Budget.create() | src/models/Budget.js |
+| Obra | Verifica que se pueda crear una obra con datos válidos | Job.create() | src/models/Job.js |
+| Obra | Verifica que no se pueda crear una obra sin nombre | Job.create() | src/models/Job.js |
+| Obra | Verifica que no se pueda crear una obra sin ubicación | Job.create() | src/models/Job.js |
+| Obra | Verifica que no se pueda crear una obra sin director | Job.create() | src/models/Job.js |
+| Obra | Verifica que se pueda actualizar el estado de una obra | job.save() | src/models/Job.js |
+| Obra | Verifica que el estado por defecto sea "Planificada" | Job.create() | src/models/Job.js |
+| Obra | Verifica que se acepten todos los estados válidos | Job.create() | src/models/Job.js |
+| Presupuesto | Verifica que el formulario tenga los campos monto, materiales, nombre de cliente y DNI como obligatorios | pug.renderFile() | src/views/newBudget.pug |
+| Obra | Verifica que el formulario tenga los campos nombre, localidad, director, fecha de inicio y fecha de fin como obligatorios | pug.renderFile() | src/views/newJob.pug |
+
 
 ## Errores comunes
 

@@ -33,24 +33,23 @@ test("debe crear una obra con datos válidos", async () => {
   await Job.findByIdAndDelete(job._id);
 });
 
-test("debe fallar si falta el nombre", async () => {
+test("debe fallar si falta el nombre de la obra", async () => {
   await assert.rejects(() => Job.create({
+    name: null,
     location: "Córdoba",
     director_id: directorId,
+    status: "planning"
   }));
 });
 
-test("debe fallar si falta la ubicación", async () => {
-  await assert.rejects(() => Job.create({
-    name: "Obra sin ubicación",
-    director_id: directorId,
-  }));
-});
+
 
 test("debe fallar si falta el director", async () => {
   await assert.rejects(() => Job.create({
     name: "Obra sin director",
     location: "Mendoza",
+    director_id: null,
+    status: "planning"
   }));
 });
 

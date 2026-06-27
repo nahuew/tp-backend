@@ -46,6 +46,7 @@ test("debe crear un presupuesto con datos válidos", async () => {
 test("debe fallar si falta nombre del cliente", async () => {
   await assert.rejects(() => Budget.create({
     idCustomer: 1,
+    nameCustomer: null,
     amountmo: 5000,
     amountmat: 3000,
     job_id: jobId
@@ -56,6 +57,7 @@ test("debe fallar si falta monto mano de obra", async () => {
   await assert.rejects(() => Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",
+    amountmo: null,
     amountmat: 3000,
     job_id: jobId
   }));
@@ -66,6 +68,7 @@ test("debe fallar si falta monto materiales", async () => {
     idCustomer: 1,
     nameCustomer: "Cliente Test",
     amountmo: 5000,
+    amountmat: null,
     job_id: jobId
   }));
 });
@@ -76,6 +79,7 @@ test("debe fallar si falta job_id", async () => {
     nameCustomer: "Cliente Test",
     amountmo: 5000,
     amountmat: 3000,
+    job_id: null
   }));
 });
 

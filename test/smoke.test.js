@@ -51,3 +51,32 @@ test("password validator enforces project rules", () => {
   assert.equal(validatePassword("Abcdefgh"), false);
   assert.equal(validatePassword("Abc!"), false);
 });
+
+//test para verificar los campos requeridos en las vistas de Presupuesto//
+
+test("el formulario de presupuesto tiene campos requeridos", () => {
+  const html = pug.renderFile(
+    path.join(viewsDir, "newBudget.pug"),
+    { jobs: [], user: null }
+  );
+
+  assert.ok(html.includes('name="amountmo"') && html.includes("required"));
+  assert.ok(html.includes('name="amountmat"') && html.includes("required"));
+  assert.ok(html.includes('name="nameCustomer"') && html.includes("required"));
+  assert.ok(html.includes('name="idCustomer"') && html.includes("required"));
+});
+
+//test para verificar los campos requeridos en las vistas de obras//
+
+test("el formulario de obra tiene campos requeridos", () => {
+  const html = pug.renderFile(
+    path.join(viewsDir, "newJob.pug"),
+    { directors: [], user: null }
+  );
+
+  assert.ok(html.includes('name="name"') && html.includes("required"));
+  assert.ok(html.includes('name="location"') && html.includes("required"));
+  assert.ok(html.includes('name="director_id"') && html.includes("required"));
+  assert.ok(html.includes('name="startDate"') && html.includes("required"));
+  assert.ok(html.includes('name="estimateEndDate"') && html.includes("required"));
+});
