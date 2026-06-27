@@ -212,6 +212,15 @@ Resumen:
 |---|---|---|
 | GET | `/chat` | Chat interno |
 
+# Integracion de chat con GEMINI IA
+
+- Instrucciones: en la terminal ejecutar: npm install @google/generative-ai
+- Para obtener la APIKEY ingresar a  https://aistudio.google.com/api-keys 
+- En el archivo local .env colocar lo indicado en .env.example 
+- En el chat, para invocar a Gemini comenzar escribiendo "@gemini" : por ejemplo: @gemini ¿Qué es CIMIENTOS SOLIDOS?
+
+--- 
+
 ## Estructura del proyecto
 
 ```text
@@ -228,7 +237,12 @@ src/
   index.js       Punto de entrada de la aplicación
 
 test/
+  
+  auth.test.js   Pruebas de autenticación y encriptación de usuario
+  budget.test.js Pruebas relacionadas al módulo de Presupuestos
+  job.test.js    Pruebas relacionadas al módulo de Obras
   smoke.test.js  Pruebas básicas del proyecto
+
 ```
 
 ## Tests
@@ -238,12 +252,23 @@ Ejecutar:
 ```bash
 npm test
 ```
+Por archivo:
+
+node --test test/budget.test.js
+node --test test/job.test.js
+node --test test/auth.test.js
+node --test test/smoke.test.js
+
 
 Actualmente las pruebas verifican:
 
 - Que todas las vistas Pug compilen.
 - Que los assets locales referenciados por las vistas existan.
 - Que la validación de password respete las reglas del proyecto.
+- Encriptación de contraseñas
+- Comparación de contraseñas 
+- Creación de Obra y validaciones: ubicación, nombre, estado, estado por defecto.
+- Creación de presupuesto y validaciones: id, nombre cliente, monto material y mano de obra, estado, monto total, estados. 
 
 ## Errores comunes
 
@@ -290,25 +315,10 @@ user@test.com / user123
 - El estilo visual esta centralizado en `src/public/css/style.css`.
 
 
-## Configuración para ejecutar los Tests automáticos
-npm install --save-dev jest
-npm install --save-dev babel-jest @babel/core @babel/preset-env
-npm install --save-dev mongodb-memory-server
-
-Para ejecutar los test:
-npx jest tests/auth.test.js
-npx jest tests/job.test.js
-npx jest tests/budget.test.js
-
-
-
 ---
-# Integracion con GEMINI IA
-
-- Instrucciones: en la terminal ejecutar: npm install @google/generative-ai
 
 
 # Autor
-=======
+
 
 Proyecto académico desarrollado para práctica de backend con Node.js, Express y MongoDB.
