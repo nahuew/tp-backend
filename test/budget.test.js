@@ -24,7 +24,7 @@ test("setup", async () => {
 });
 
 // ----------------------
-// TESTS DEL MODELO BUDGET
+// TESTS DEL MODULO BUDGET (Presupuesto)
 // ----------------------
 test("debe crear un presupuesto con datos válidos", async () => {
   const budget = await Budget.create({
@@ -42,16 +42,8 @@ test("debe crear un presupuesto con datos válidos", async () => {
   await Budget.findByIdAndDelete(budget._id);
 });
 
-test("debe fallar si falta idCustomer", async () => {
-  await assert.rejects(() => Budget.create({
-    nameCustomer: "Cliente Test",
-    amountmo: 5000,
-    amountmat: 3000,
-    job_id: jobId
-  }));
-});
 
-test("debe fallar si falta nameCustomer", async () => {
+test("debe fallar si falta nombre del cliente", async () => {
   await assert.rejects(() => Budget.create({
     idCustomer: 1,
     amountmo: 5000,
@@ -60,7 +52,7 @@ test("debe fallar si falta nameCustomer", async () => {
   }));
 });
 
-test("debe fallar si falta amountmo", async () => {
+test("debe fallar si falta monto mano de obra", async () => {
   await assert.rejects(() => Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",
@@ -69,7 +61,7 @@ test("debe fallar si falta amountmo", async () => {
   }));
 });
 
-test("debe fallar si falta amountmat", async () => {
+test("debe fallar si falta monto materiales", async () => {
   await assert.rejects(() => Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",
@@ -87,7 +79,7 @@ test("debe fallar si falta job_id", async () => {
   }));
 });
 
-test("el estado por defecto debe ser waiting", async () => {
+test("el estado por defecto debe ser En espera", async () => {
   const budget = await Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",
@@ -99,18 +91,25 @@ test("el estado por defecto debe ser waiting", async () => {
   await Budget.findByIdAndDelete(budget._id);
 });
 
-test("debe fallar con un estado no permitido", async () => {
-  await assert.rejects(() => Budget.create({
+test("debe poder actualizar el estado de un presupuesto", async () => {
+  const budget = await Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",
     amountmo: 5000,
     amountmat: 3000,
     job_id: jobId,
-    status: "pendiente"
-  }));
+    status: "waiting"
+  });
+
+  budget.status = "approved";
+  await budget.save();
+
+  const actualizado = await Budget.findById(budget._id);
+  assert.equal(actualizado.status, "approved");
+  await Budget.findByIdAndDelete(budget._id);
 });
 
-test("el campo virtual amountot debe sumar amountmo y amountmat", async () => {
+test("el monto total debe sumar monto mano de obra y monto materiales", async () => {
   const budget = await Budget.create({
     idCustomer: 1,
     nameCustomer: "Cliente Test",

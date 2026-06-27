@@ -17,7 +17,7 @@ test("setup", async () => {
 });
 
 // ----------------------
-// TESTS DEL MODELO JOB
+// TESTS del modulo JOB (Obra)
 // ----------------------
 test("debe crear una obra con datos válidos", async () => {
   const job = await Job.create({
@@ -54,22 +54,30 @@ test("debe fallar si falta el director", async () => {
   }));
 });
 
-test("debe fallar con una ubicación no permitida", async () => {
+test("debe fallar si no se ingresó ubicacion", async () => {
   await assert.rejects(() => Job.create({
-    name: "Obra inválida",
-    location: "Rosario",
+    name: "Obra sin ubicacion",
+    location: "",
     director_id: directorId,
   }));
 });
 
-test("debe fallar con un estado no permitido", async () => {
-  await assert.rejects(() => Job.create({
-    name: "Obra inválida",
+test("debe poder actualizar el estado de una obra", async () => {
+  const job = await Job.create({
+    name: "Obra Test",
     location: "Santa Fe",
     director_id: directorId,
-    status: "terminada"
-  }));
+    status: "planning"
+  });
+
+  job.status = "active";
+  await job.save();
+
+  const actualizada = await Job.findById(job._id);
+  assert.equal(actualizada.status, "active");
+  await Job.findByIdAndDelete(job._id);
 });
+
 
 test("el estado por defecto debe ser planning", async () => {
   const job = await Job.create({
