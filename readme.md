@@ -2,7 +2,7 @@
 
 Aplicación web backend para administrar obras, presupuestos y usuarios de una empresa constructora.
 
-El proyecto está desarrollado con Node.js, Express, MongoDB, Mongoose y Pug. Incluye autenticación con Passport, sesiones, roles de usuario, vistas server-side y chat interno con Socket.IO.
+El proyecto está desarrollado con Node.js, Express, MongoDB, Mongoose y Pug. Incluye autenticación con Passport, sesiones, roles de usuario, rate limiting para login, vistas server-side, chat interno con Socket.IO e integración opcional con Gemini.
 
 ## Tecnologías
 
@@ -15,10 +15,13 @@ El proyecto está desarrollado con Node.js, Express, MongoDB, Mongoose y Pug. In
 - Passport Local
 - bcrypt
 - express-session
+- express-rate-limit
 - method-override
 - Socket.IO
+- Google Generative AI
 - Nodemon
 - Node Test Runner
+- mongodb-memory-server para tests de modelos
 
 ## Requisitos
 
@@ -42,7 +45,7 @@ Instalar dependencias:
 npm install
 ```
 
-## Variables de entorno
+## Variables De Entorno
 
 Crear un archivo `.env` en la raíz del proyecto. Se puede tomar como base `.env.example`.
 
@@ -52,17 +55,17 @@ Ejemplo para entorno local:
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/Cimientos_Solidos_SA
 SESSION_SECRET=un_secreto_para_desarrollo
+GEMINI_API_KEY=tu_api_key_de_google_ai_studio
 ```
-
-Variables disponibles:
 
 | Variable | Descripción |
 |---|---|
 | `PORT` | Puerto donde corre la aplicación. Por defecto usa `3000`. |
 | `MONGO_URI` | String de conexión a MongoDB. |
 | `SESSION_SECRET` | Clave usada para firmar la sesión de Express. |
+| `GEMINI_API_KEY` | API key de Google AI Studio para responder consultas desde el chat con `@gemini`. |
 
-## Base de datos
+## Base De Datos
 
 Para usar MongoDB localmente, iniciar MongoDB Community Server y conectarse a:
 
@@ -76,11 +79,9 @@ Con MongoDB Compass se puede inspeccionar la base:
 Cimientos_Solidos_SA
 ```
 
-## Datos de prueba
+## Datos De Prueba
 
 El proyecto incluye un seed que limpia la base y crea usuarios, directores, obras y presupuestos de ejemplo.
-
-Ejecutar:
 
 ```bash
 npm run seed
@@ -108,7 +109,7 @@ Usuarios creados por el seed:
 | `npm run seed` | Carga datos de prueba en MongoDB. |
 | `npm test` | Ejecuta pruebas con el test runner nativo de Node. |
 
-## Ejecutar la aplicación
+## Ejecutar La Aplicación
 
 Con MongoDB iniciado y el archivo `.env` configurado:
 
@@ -130,6 +131,7 @@ La raíz `/` redirige a `/login`.
 - Autenticación con Passport Local.
 - Passwords hasheadas con bcrypt.
 - Sesiones con `express-session`.
+- Límite de intentos incorrectos de login con `express-rate-limit`.
 - Mensajes flash para acciones del sistema.
 - Roles `admin` y `user`.
 - Administración de usuarios para admins.
@@ -140,8 +142,9 @@ La raíz `/` redirige a `/login`.
 - Eliminación protegida por permisos.
 - Confirmación visual antes de eliminar.
 - Chat interno en tiempo real con Socket.IO.
+- Respuestas de Gemini en el chat usando mensajes que empiezan con `@gemini`.
 - Vistas Pug con estilos centralizados.
-- Tests basicos de vistas, assets y validacion de password.
+- Tests unitarios y smoke tests.
 
 ## Permisos
 
@@ -151,15 +154,13 @@ Los permisos principales están definidos en:
 src/config/permissionMap.js
 ```
 
-Resumen:
-
 | Módulo | User | Admin |
 |---|---|---|
 | Obras | Ver, crear, editar | Ver, crear, editar, eliminar |
 | Presupuestos | Ver, crear, editar | Ver, crear, editar, eliminar |
 | Usuarios | Sin acceso | Ver, cambiar rol, eliminar |
 
-## Rutas principales
+## Rutas Principales
 
 ### Autenticación
 
@@ -212,22 +213,21 @@ Resumen:
 |---|---|---|
 | GET | `/chat` | Chat interno |
 
-# Integracion de chat con GEMINI IA
+## Integración Con Gemini
 
-- Instrucciones: en la terminal ejecutar: npm install @google/generative-ai
-- Para obtener la APIKEY ingresar a  https://aistudio.google.com/api-keys 
-- En el archivo local .env colocar lo indicado en .env.example 
-- En el chat, para invocar a Gemini comenzar escribiendo "@gemini" : por ejemplo: @gemini ¿Qué es CIMIENTOS SOLIDOS?
+- La dependencia `@google/generative-ai` ya está incluida en `package.json`.
+- Para obtener la API key, ingresar a https://aistudio.google.com/api-keys.
+- En el archivo local `.env`, configurar `GEMINI_API_KEY` como indica `.env.example`.
+- En el chat, para invocar a Gemini, comenzar el mensaje con `@gemini`.
+- Ejemplo: `@gemini ¿Qué es Cimientos Sólidos?`
 
---- 
-
-## Estructura del proyecto
+## Estructura Del Proyecto
 
 ```text
 src/
   config/        Configuración de base de datos, Passport y permisos
   controllers/   Lógica de controladores
-  middlewares/   Autenticación, roles, permisos y flash
+  middlewares/   Autenticación, roles, permisos, rate limit y flash
   models/        Modelos de Mongoose
   public/        CSS, JavaScript del cliente e imágenes
   routes/        Rutas de Express
@@ -237,61 +237,39 @@ src/
   index.js       Punto de entrada de la aplicación
 
 test/
-  
-  auth.test.js   Pruebas de autenticación y encriptación de usuario
-  budget.test.js Pruebas relacionadas al módulo de Presupuestos
-  job.test.js    Pruebas relacionadas al módulo de Obras
-  smoke.test.js  Pruebas básicas del proyecto
-
+  auth.test.js    Pruebas de autenticación y encriptación
+  budget.test.js  Pruebas del modelo de presupuestos
+  job.test.js     Pruebas del modelo de obras
+  smoke.test.js   Pruebas básicas de vistas, assets y validaciones
 ```
 
 ## Tests
 
-Ejecutar:
+Ejecutar toda la suite:
 
 ```bash
 npm test
 ```
-Por archivo:
 
-- node --test test/budget.test.js
-- node --test test/job.test.js
-- node --test test/auth.test.js
-- node --test test/smoke.test.js
+Ejecutar un archivo puntual:
 
+```bash
+node --test test/budget.test.js
+node --test test/job.test.js
+node --test test/auth.test.js
+node --test test/smoke.test.js
+```
 
+Actualmente las pruebas verifican:
 
-## Tests unitarios
+- Encriptación y comparación de contraseñas.
+- Validación de password.
+- Compilación de vistas Pug.
+- Existencia de assets locales referenciados por las vistas.
+- Campos requeridos en formularios de obra y presupuesto.
+- Creación, validaciones, estados y cálculos de modelos `Job` y `Budget`.
 
-| Módulo | Funcionalidad | Función | Archivo |
-|---|---|---|---|
-| Autenticación | Verifica que la validación de contraseña rechaza contraseñas inválidas y acepta las válidas | validatePassword() | src/utils/validators.js |
-| Vistas | Verifica que todos los archivos .pug compilan sin errores de sintaxis | pug.compileFile() | src/views/*.pug |
-| Archivos estáticos | Verifica que los archivos CSS, JS e imágenes referenciados en las vistas existen físicamente | fs.existsSync() | src/public/ |
-| Encriptación | Verifica que la contraseña se encripta correctamente | hashPassword() | src/utils/password.js |
-| Autenticación | Verifica que una contraseña correcta coincide con su hash | comparePassword() | src/utils/password.js |
-| Autenticación | Verifica que una contraseña incorrecta es rechazada | comparePassword() | src/utils/password.js |
-| Presupuesto | Verifica que se pueda crear un presupuesto con datos válidos | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que no se pueda crear un presupuesto sin nombre de cliente | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que no se pueda crear un presupuesto sin monto de mano de obra | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que no se pueda crear un presupuesto sin monto de materiales | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que no se pueda crear un presupuesto sin una obra asociada | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que el estado por defecto al crear un presupuesto sea "En espera" | Budget.create() | src/models/Budget.js |
-| Presupuesto | Verifica que al actualizar el estado se guarda correctamente en la base de datos | budget.save() | src/models/Budget.js |
-| Presupuesto | Verifica que el monto total sume el monto de mano de obra y materiales | budget.amountot | src/models/Budget.js |
-| Presupuesto | Verifica que se acepten todos los estados válidos | Budget.create() | src/models/Budget.js |
-| Obra | Verifica que se pueda crear una obra con datos válidos | Job.create() | src/models/Job.js |
-| Obra | Verifica que no se pueda crear una obra sin nombre | Job.create() | src/models/Job.js |
-| Obra | Verifica que no se pueda crear una obra sin ubicación | Job.create() | src/models/Job.js |
-| Obra | Verifica que no se pueda crear una obra sin director | Job.create() | src/models/Job.js |
-| Obra | Verifica que se pueda actualizar el estado de una obra | job.save() | src/models/Job.js |
-| Obra | Verifica que el estado por defecto sea "Planificada" | Job.create() | src/models/Job.js |
-| Obra | Verifica que se acepten todos los estados válidos | Job.create() | src/models/Job.js |
-| Presupuesto | Verifica que el formulario tenga los campos monto, materiales, nombre de cliente y DNI como obligatorios | pug.renderFile() | src/views/newBudget.pug |
-| Obra | Verifica que el formulario tenga los campos nombre, localidad, director, fecha de inicio y fecha de fin como obligatorios | pug.renderFile() | src/views/newJob.pug |
-
-
-## Errores comunes
+## Errores Comunes
 
 ### Cannot find module
 
@@ -301,7 +279,7 @@ Instalar dependencias:
 npm install
 ```
 
-### Error de conexión a MongoDB
+### Error De Conexión A MongoDB
 
 Verificar que MongoDB esté iniciado.
 
@@ -313,7 +291,7 @@ services.msc
 
 Buscar `MongoDB Server` y confirmar que esté en estado `Running`.
 
-### Credenciales incorrectas
+### Credenciales Incorrectas
 
 Si se usa el seed, iniciar sesión con:
 
@@ -327,19 +305,18 @@ o:
 user@test.com / user123
 ```
 
-## Notas de desarrollo
+### Gemini No Responde
+
+Verificar que `GEMINI_API_KEY` exista en `.env` y que la API key sea válida.
+
+## Notas De Desarrollo
 
 - El proyecto usa ES Modules, por eso se utiliza `import/export`.
 - Las eliminaciones desde formularios usan `method-override` con `?_method=DELETE`.
 - Las rutas de obras y presupuestos requieren usuario autenticado.
 - Las acciones destructivas están restringidas al rol `admin`.
-- El estilo visual esta centralizado en `src/public/css/style.css`.
+- El estilo visual está centralizado en `src/public/css/style.css`.
 
-
----
-
-
-# Autor
-
+## Autor
 
 Proyecto académico desarrollado para práctica de backend con Node.js, Express y MongoDB.
